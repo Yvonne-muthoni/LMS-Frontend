@@ -9,8 +9,6 @@ function RegistrationForm({
   setEmail,
   password,
   setPassword,
-  confirmPassword,
-  setConfirmPassword,
   error,
   handleSubmit,
 }) {
@@ -78,24 +76,10 @@ function RegistrationForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div>
-                <label htmlFor="confirmPassword" className="sr-only">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  className="appearance-none rounded-md block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
             </div>
-
+            <div>
+              
+            </div>
             <div>
               <button
                 type="submit"
