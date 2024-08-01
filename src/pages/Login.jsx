@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegistrationForm from "./RegistrationForm";
+import LoginForm from "../user/ LoginForm";
 
-function Register() {
-  const [username, setUsername] = useState("");
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -14,26 +12,20 @@ function Register() {
     e.preventDefault();
     setError("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("http://127.0.0.1:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
           email,
           password,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Signup failed");
+        throw new Error("Login failed");
       }
 
       const data = await response.json();
@@ -42,27 +34,23 @@ function Register() {
         localStorage.setItem("token", data.access_token);
         navigate("/home");
       } else {
-        setError(data.message || "Signup failed. Please try again.");
+        setError(data.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError("Signup failed. Please try again.");
+      setError("Login failed. Please try again.");
     }
   };
 
   return (
-    <RegistrationForm
-      username={username}
-      setUsername={setUsername}
+    <LoginForm
       email={email}
       setEmail={setEmail}
       password={password}
       setPassword={setPassword}
-      confirmPassword={confirmPassword}
-      setConfirmPassword={setConfirmPassword}
       error={error}
       handleSubmit={handleSubmit}
     />
   );
 }
 
-export default Register;
+export default Login;

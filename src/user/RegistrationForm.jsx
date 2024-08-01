@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import COVER_Login from "/src/assets/images/COVER_Login.jpg";
+import welcome from "/src/assets/images/welcome.jpg";
 
-function LoginForm({
+function RegistrationForm({
   username,
   setUsername,
   email,
-  setEmail,
+  setEmail, 
   password,
   setPassword,
   error,
@@ -14,25 +14,29 @@ function LoginForm({
 }) {
   return (
     <div className="flex min-h-screen bg-white">
+      <div
+        className="hidden lg:flex w-1/2 bg-cover bg-center"
+        style={{ backgroundImage: `url(${welcome})` }}
+      ></div>
       <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-orange-600">
-              Log in
+            <h2 className="text-center text-3xl font-extrabold text-orange-600">
+              REGISTER
             </h2>
           </div>
           {error && <p className="text-center text-red-600">{error}</p>}
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <div className="rounded-md space-y-3">
+            <div className="rounded-md shadow-sm space-y-3">
               <div>
-                <label htmlFor="user" className="sr-only">
+                <label htmlFor="username" className="sr-only">
                   Username
                 </label>
                 <input
-                  id="user"
-                  name="user"
+                  id="username"
+                  name="username"
                   type="text"
-                  autoComplete="user"
+                  autoComplete="username"
                   required
                   className="appearance-none rounded-md block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm"
                   placeholder="Username"
@@ -64,7 +68,7 @@ function LoginForm({
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   className="appearance-none rounded-md block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm"
                   placeholder="Password"
@@ -73,33 +77,28 @@ function LoginForm({
                 />
               </div>
             </div>
-
             <div>
               <button
                 type="submit"
                 className="group relative w-full max-w-xs mx-auto flex justify-center py-2 px-6 border border-transparent text-sm font-medium rounded-full text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
               >
-                LOGIN
+                REGISTER
               </button>
             </div>
           </form>
           <div className="text-sm text-center">
-            <span className="text-gray-600">Don't have an account? </span>
+            <span>Already have an account? </span>
             <Link
-              to="/register"
+              to="/"
               className="font-medium text-orange-600 hover:text-orange-500"
             >
-              Register here
+              Log in here
             </Link>
           </div>
         </div>
       </div>
-      <div
-        className="hidden lg:flex w-1/2 bg-cover bg-center"
-        style={{ backgroundImage: `url(${COVER_Login})` }}
-      ></div>
     </div>
   );
 }
 
-export default LoginForm;
+export default RegistrationForm;

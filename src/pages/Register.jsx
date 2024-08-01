@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "./LoginForm";
+import RegistrationForm from "../user/RegistrationForm";
 
-function Login() {
+
+function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,9 +13,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("http://127.0.0.1:5000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ function Login() {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        throw new Error("Signup failed");
       }
 
       const data = await response.json();
@@ -36,15 +36,15 @@ function Login() {
         localStorage.setItem("token", data.access_token);
         navigate("/home");
       } else {
-        setError(data.message || "Login failed. Please try again.");
+        setError(data.message || "Signup failed. Please try again.");
       }
     } catch (err) {
-      setError("Login failed. Please try again.");
+      setError("Signup failed. Please try again.");
     }
   };
 
   return (
-    <LoginForm
+    <RegistrationForm
       username={username}
       setUsername={setUsername}
       email={email}
@@ -57,4 +57,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
