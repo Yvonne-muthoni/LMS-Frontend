@@ -6,7 +6,7 @@ function RegistrationForm({
   username,
   setUsername,
   email,
-  setEmail,
+  setEmail, 
   password,
   setPassword,
   error,
@@ -76,9 +76,6 @@ function RegistrationForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-            </div>
-            <div>
-              
             </div>
             <div>
               <button

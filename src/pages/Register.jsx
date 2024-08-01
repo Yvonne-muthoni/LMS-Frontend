@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegistrationForm from "../user/RegistrationForm";
 
+
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
