@@ -69,7 +69,7 @@ function LoginModal({ onClose }) {
           </button>
         </div>
         <p className="mt-6 text-center text-sm text-gray-500">
-          By continuing, you agree to ou <a href="#" className="text-[#FF6247] hover:underline">Terms of Service</a> and <a href="#" className="text-[#FF6247] hover:underline">Privacy Policy</a>.
+          By continuing, you agree to our <a href="#" className="text-[#FF6247] hover:underline">Terms of Service</a> and <a href="#" className="text-[#FF6247] hover:underline">Privacy Policy</a>.
         </p>
       </div>
     </div>
