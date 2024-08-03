@@ -3,37 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import LoginModal from '../common/LoginModal';
 
-function CourseCard({ id, title, description, url }) {
+function CourseCard({ id, title, description, url, tags }) {
   const { isAuthenticated, login } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log('Card clicked');
     if (isAuthenticated) {
       navigate(`/courses/${id}`);
     } else {
-      console.log('Showing modal');
       setShowModal(true);
     }
   };
 
-  const handleLogin = () => {
-    console.log('Login button clicked');
-    login();
-    setShowModal(false);  // Close the modal
-    navigate(`/courses/${id}`);  // Navigate to the course page
+  const handleLogin = async () => {
+    try {
+      await login();
+      setShowModal(false);  // Close the modal
+      navigate(`/courses/${id}`);  // Navigate to the course page
+    } catch (error) {
+      console.error('Login failed', error);
+      // Optionally, show an error message or handle the login failure
+    }
   };
 
   const handleSignUp = () => {
-    console.log('Sign Up button clicked');
-    // Implement sign-up logic or navigate to a sign-up page
     setShowModal(false);  // Close the modal
+    navigate('/signup');  // Navigate to the sign-up page
   };
 
   return (
     <>
-      <div 
+      <div
         className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform transform-gpu hover:scale-105 hover:shadow-2xl border border-gray-200 flex flex-col cursor-pointer"
         style={{ height: '400px', width: '300px' }}
         onClick={handleClick}
@@ -42,7 +43,7 @@ function CourseCard({ id, title, description, url }) {
         <div className="relative" style={{ width: '100%', height: '45%' }}>
           <img
             src={`https://img.youtube.com/vi/${url.split('v=')[1]}/maxresdefault.jpg`}
-            alt="Video Thumbnail"
+            alt={title || 'Course Thumbnail'}
             className="absolute inset-0 w-full h-full object-cover rounded-t-2xl"
           />
         </div>
@@ -53,14 +54,24 @@ function CourseCard({ id, title, description, url }) {
           <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate">{title}</h3>
           {/* Description */}
           <p className="text-gray-700 text-sm flex-grow overflow-hidden">{description}</p>
+          {/* Tags */}
+          {tags && tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap">
+              {tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-2"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       {showModal && (
-        <LoginModal 
-          onClose={() => {
-            console.log('Modal close button clicked');
-            setShowModal(false);
-          }}
+        <LoginModal
+          onClose={() => setShowModal(false)}
           onLogin={handleLogin}
           onSignUp={handleSignUp}
         />

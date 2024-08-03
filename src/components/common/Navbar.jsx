@@ -1,4 +1,3 @@
-// components/common/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -15,29 +14,45 @@ function Navbar() {
         <nav>
           <ul className="flex space-x-6">
             <li>
-              <Link to="/subscription" className="text-black font-bold border-2 px-2 py-0.5 rounded-md border-coral-500 text-coral-500">
+              <Link 
+                to="/subscription" 
+                className="text-coral-500 font-bold border-2 border-coral-500 px-2 py-0.5 rounded-md hover:bg-coral-500 hover:text-white transition-colors"
+              >
                 PRO
               </Link>
             </li>
             <li>
-              <Link to="/labs" className="text-black font-bold">
+              <Link 
+                to="/labs" 
+                className="text-black font-bold hover:text-coral-500 transition-colors"
+              >
                 Labs
               </Link>
             </li>
             <li>
-              <Link to="/courses" className="text-black font-bold">
+              <Link 
+                to="/courses" 
+                className="text-black font-bold hover:text-coral-500 transition-colors"
+              >
                 Courses
               </Link>
             </li>
             {isAuthenticated ? (
               <li>
-                <button onClick={logout} className="text-black font-bold bg-coral-500 text-white px-4 py-2 rounded-md">
+                <button 
+                  onClick={logout} 
+                  className="text-white font-bold bg-coral-500 px-4 py-2 rounded-md hover:bg-coral-600 transition-colors"
+                  aria-label="Logout"
+                >
                   Logout
                 </button>
               </li>
             ) : (
               <li>
-                <Link to="/login" className="text-black font-bold bg-coral-500 text-white px-4 py-2 rounded-md">
+                <Link 
+                  to="/login" 
+                  className="text-white font-bold bg-coral-500 px-4 py-2 rounded-md hover:bg-coral-600 transition-colors"
+                >
                   Login
                 </Link>
               </li>

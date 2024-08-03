@@ -19,7 +19,7 @@ function TestimonialCard({ name, comment }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M15 17h6v-6h-6v6zM3 17h6v-6H3v6z"></path>
+          <path d="M15 17h6v-6h-6v6zM3 17h6v-6H3v6z" />
         </svg>
         <p className="text-lg font-light text-gray-700">{comment}</p>
       </div>

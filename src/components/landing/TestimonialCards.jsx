@@ -4,6 +4,7 @@ import TestimonialCard from './TestimonialCard';
 function TestimonialCards() {
   const [isVisible, setIsVisible] = useState(false);
 
+  // Effect to handle scroll event and check visibility
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, clientHeight } = document.documentElement;
@@ -15,11 +16,12 @@ function TestimonialCards() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); 
+    handleScroll(); // Initial check on component mount
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Testimonial data
   const testimonials = [
     { name: 'John Doe', comment: 'This course changed my life!' },
     { name: 'Jane Smith', comment: 'I\'m now confident in my coding skills.' },
