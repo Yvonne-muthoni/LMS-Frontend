@@ -1,48 +1,72 @@
-// import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import LoginModal from '../common/LoginModal';
 
-// const CourseCard = ({ title, description, url,  }) => {
-//     return (
-//         <div className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-gray-100 flex flex-col" style={{ height: '400px', width: '300px' }}>
-//             <div className="p-6 flex flex-col h-full">
-//                 <h3 className="text-2xl font-bold text-gray-900 mb-2">{title}</h3>
-//                 <p className="text-gray-600 mb-4 flex-grow">{description}</p>
-//                 <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#FF6247] underline">
-//                     Watch Trailer
-//                 </a>
-//             </div>
-//         </div>
-//     );
-// };
+function CourseCard({ id, title, description, url }) {
+  const { isAuthenticated, login } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
-// export default CourseCard;
-import React from 'react';
+  const handleClick = () => {
+    console.log('Card clicked');
+    if (isAuthenticated) {
+      navigate(`/courses/${id}`);
+    } else {
+      console.log('Showing modal');
+      setShowModal(true);
+    }
+  };
 
-const CourseCard = ({ title, description, url }) => {
-    // Extract the YouTube video ID from the URL
-    const videoId = url.split('v=')[1];
-    const videoEmbedUrl = `https://www.youtube.com/embed/${videoId}`;
+  const handleLogin = () => {
+    console.log('Login button clicked');
+    login();
+    setShowModal(false);  // Close the modal
+    navigate(`/courses/${id}`);  // Navigate to the course page
+  };
 
-    return (
-        <div className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-gray-100 flex flex-col" style={{ height: '400px', width: '300px' }}>
-            <div className="p-4 flex flex-col h-full">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-gray-600 mb-4 flex-grow overflow-hidden" style={{ maxHeight: '4rem', textOverflow: 'ellipsis' }}>{description}</p>
-                <div className="flex justify-center mt-auto">
-                    <iframe
-                        className="rounded-xl"
-                        width="100%"
-                        height="150px"
-                        src={videoEmbedUrl}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        style={{ borderRadius: '12px' }}
-                    ></iframe>
-                </div>
-            </div>
+  const handleSignUp = () => {
+    console.log('Sign Up button clicked');
+    // Implement sign-up logic or navigate to a sign-up page
+    setShowModal(false);  // Close the modal
+  };
+
+  return (
+    <>
+      <div 
+        className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform transform-gpu hover:scale-105 hover:shadow-2xl border border-gray-200 flex flex-col cursor-pointer"
+        style={{ height: '400px', width: '300px' }}
+        onClick={handleClick}
+      >
+        {/* Thumbnail */}
+        <div className="relative" style={{ width: '100%', height: '45%' }}>
+          <img
+            src={`https://img.youtube.com/vi/${url.split('v=')[1]}/maxresdefault.jpg`}
+            alt="Video Thumbnail"
+            className="absolute inset-0 w-full h-full object-cover rounded-t-2xl"
+          />
         </div>
-    );
-};
+
+        {/* Content */}
+        <div className="p-6 flex flex-col flex-grow">
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate">{title}</h3>
+          {/* Description */}
+          <p className="text-gray-700 text-sm flex-grow overflow-hidden">{description}</p>
+        </div>
+      </div>
+      {showModal && (
+        <LoginModal 
+          onClose={() => {
+            console.log('Modal close button clicked');
+            setShowModal(false);
+          }}
+          onLogin={handleLogin}
+          onSignUp={handleSignUp}
+        />
+      )}
+    </>
+  );
+}
 
 export default CourseCard;

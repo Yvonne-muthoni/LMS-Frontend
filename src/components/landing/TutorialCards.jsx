@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TutorialCard from './TutorialCard';
 
@@ -8,7 +8,7 @@ function TutorialCards() {
   useEffect(() => {
     const fetchTutorials = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/courses'); 
+        const response = await axios.get('http://127.0.0.1:5000/courses'); 
         setTutorials(response.data);
       } catch (error) {
         console.error('Error fetching tutorials:', error);
@@ -18,7 +18,6 @@ function TutorialCards() {
     fetchTutorials();
   }, []);
 
-  // Get only the first three tutorials
   const displayedTutorials = tutorials.slice(13,16);
 
   return (
@@ -33,7 +32,7 @@ function TutorialCards() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedTutorials.map((tutorial) => (
             <TutorialCard
-              key={tutorial.id} // Ensure unique id or index if id is not available
+              key={tutorial.id}
               title={tutorial.title}
               description={tutorial.description}
               url={tutorial.url}

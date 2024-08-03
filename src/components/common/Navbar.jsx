@@ -1,6 +1,11 @@
+// components/common/Navbar.js
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -9,21 +14,34 @@ function Navbar() {
         </Link>
         <nav>
           <ul className="flex space-x-6">
-            {[
-              { path: '/subscription', label: 'PRO', extraClasses: 'border-2 px-2 py-0.5 rounded-md border-coral-500 text-coral-500' },
-              { path: '/labs', label: 'labs' },
-              { path: '/courses', label: 'courses' },
-              { path: '/login', label: 'login', extraClasses: 'bg-coral-500 text-white px-4 py-2 rounded-md' },
-            ].map(({ path, label, extraClasses = '' }) => (
-              <li key={path}>
-                <Link
-                  to={path}
-                  className={`text-black font-bold ${extraClasses}`}
-                >
-                  {label}
+            <li>
+              <Link to="/subscription" className="text-black font-bold border-2 px-2 py-0.5 rounded-md border-coral-500 text-coral-500">
+                PRO
+              </Link>
+            </li>
+            <li>
+              <Link to="/labs" className="text-black font-bold">
+                Labs
+              </Link>
+            </li>
+            <li>
+              <Link to="/courses" className="text-black font-bold">
+                Courses
+              </Link>
+            </li>
+            {isAuthenticated ? (
+              <li>
+                <button onClick={logout} className="text-black font-bold bg-coral-500 text-white px-4 py-2 rounded-md">
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login" className="text-black font-bold bg-coral-500 text-white px-4 py-2 rounded-md">
+                  Login
                 </Link>
               </li>
-            ))}
+            )}
           </ul>
         </nav>
       </div>

@@ -1,9 +1,7 @@
-// import React from 'react';
 import { Link } from 'react-router-dom';
 
 function TutorialCard({ title, description, url }) {
-  // Extract the video ID from the URL if it's a YouTube URL
-  const videoId = new URL(url).searchParams.get('v'); // Assuming URL is a YouTube video URL
+  const videoId = new URL(url).searchParams.get('v');
 
   return (
     <div className="block bg-white rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-2xl hover:scale-105">
