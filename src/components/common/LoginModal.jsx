@@ -1,38 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import '../../index.css'; // Import the CSS for animations
 
 function LoginModal({ onClose }) {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true); // Trigger the fade-in animation on mount
+  }, []);
+
+  const handleClose = () => {
+    setIsVisible(false); // Trigger the fade-out animation
+    setTimeout(() => {
+      onClose(); // Call the onClose prop after the animation duration
+    }, 300); // Match the timeout with the duration of the CSS animation
+  };
 
   const handleLogin = async () => {
     try {
       await login();
-      onClose();
+      handleClose();
       navigate('/dashboard'); // Navigate to a specific route after login
     } catch (error) {
-      // Handle login error (e.g., show an error message)
       console.error('Login failed', error);
     }
   };
 
   const handleSignUp = () => {
-    onClose();
+    handleClose();
     navigate('/signup'); // Navigate to the signup page
   };
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4"
-      onClick={onClose}
+      className={`fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      onClick={handleClose}
     >
       <div
-        className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full relative"
+        className={`bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full relative transition-transform duration-300 transform ${isVisible ? 'translate-y-0' : 'translate-y-10'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label="Close"
         >
