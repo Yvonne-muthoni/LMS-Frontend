@@ -1,4 +1,3 @@
-// Register.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegistrationForm from "../components/user/RegistrationForm";
@@ -8,6 +7,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(""); // Added state for passwordStrength
   const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -16,10 +16,18 @@ function Register() {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    if (newPassword.length >= 8 && /\d/.test(newPassword) && /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-      setPasswordStrength('Strong');
+
+    // Update password strength based on the new password value
+    if (
+      newPassword.length >= 8 &&
+      /\d/.test(newPassword) &&
+      /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+    ) {
+      setPasswordStrength("Strong");
+    } else if (newPassword.length >= 6) {
+      setPasswordStrength("Medium");
     } else {
-      setPasswordStrength('Weak');
+      setPasswordStrength("Weak");
     }
   };
 
@@ -39,7 +47,7 @@ function Register() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           username,
@@ -64,7 +72,7 @@ function Register() {
         } else {
           navigate("/home");
         }
-      }, 2000); 
+      }, 2000);
     } catch (err) {
       setError(err.message || "Signup failed. Please try again.");
     }
@@ -80,7 +88,7 @@ function Register() {
       setPassword={setPassword}
       confirmPassword={confirmPassword}
       setConfirmPassword={setConfirmPassword}
-      passwordStrength={passwordStrength}
+      passwordStrength={passwordStrength} // Pass passwordStrength as a prop
       handlePasswordChange={handlePasswordChange}
       handleSubmit={handleSubmit}
       error={error}
