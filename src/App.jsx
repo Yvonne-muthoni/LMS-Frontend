@@ -7,6 +7,7 @@ import Courses from './pages/Courses';
 import CourseVideo from './pages/CourseVideo';
 import Labs from './pages/Labs';
 import Footer from './components/common/Footer';
+import Home from './pages/Home'; 
 import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:courseId" element={<CourseVideo />} />
               <Route path="/labs" element={<Labs />} />
+              <Route path="/home" element={<Home />} /> 
             </Routes>
           </main>
           <Footer />
