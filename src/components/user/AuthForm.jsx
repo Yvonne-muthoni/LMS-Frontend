@@ -5,6 +5,8 @@ import { Button, Box } from '@chakra-ui/react';
 import WelcomeSection from './WelcomeSection';
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
+import Login from '../../pages/Login';
+import Register from './RegistrationForm';
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -68,16 +70,7 @@ const AuthForm = () => {
               </button>
             </div>
           </div>
-          <div
-            className="form-container"
-            style={{
-              transition: 'opacity 0.5s ease, transform 0.5s ease',
-              opacity: fade ? 0 : 1,
-              transform: fade ? 'translateY(20px)' : 'translateY(0)',
-            }}
-          >
-            {!isSignUp ? <LoginForm /> : <RegistrationForm />}
-          </div>
+          {!isSignUp ? <Login /> : <Register />}
         </div>
       </div>
     </div>
