@@ -1,4 +1,6 @@
+// WelcomeSection.js
 import React from 'react';
+import welcome from '../../assets/images/welcome.jpg';
 
 function WelcomeSection() {
   return (
@@ -6,7 +8,7 @@ function WelcomeSection() {
       <h1 className="text-4xl font-bold mb-4 text-indigo-900">
         Welcome to<br />SkillQuest<br />Learning Platform
       </h1>
-      <img src="/path-to-your-illustration.png" alt="Learning illustration" className="w-full" />
+      <img src={welcome} alt="Learning illustration" className="w-full" />
     </div>
   );
 }
