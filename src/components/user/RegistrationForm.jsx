@@ -1,8 +1,8 @@
 // RegistrationForm.js
 import React from 'react';
-import PasswordStrengthIndicator from './PasswordStrengthIndicator';
 
-function RegistrationForm({ username, setUsername, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, passwordStrength, handlePasswordChange, handleSubmit, error, success }) {
+
+function RegistrationForm({ username, setUsername, email, setEmail, handleSubmit, error, success }) {
   return (
     <div className="w-1/2 p-8">
       <h2 className="text-2xl font-bold mb-6">Create an Account</h2>
@@ -51,7 +51,6 @@ function RegistrationForm({ username, setUsername, email, setEmail, password, se
             required
           />
         </div>
-        <PasswordStrengthIndicator strength={passwordStrength} />
         <div className="flex items-center justify-between">
           <button
             className="bg-coral-500 hover:bg-coral-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
