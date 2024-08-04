@@ -9,9 +9,10 @@ import Labs from './pages/Labs';
 import Home from './pages/Home';
 import { AuthProvider } from './contexts/AuthContext';
 import Login from './pages/Login';
-import Register from './pages/Register';
+
 import Profile from './pages/Profile';
 import WelcomeSection from './components/user/WelcomeSection';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
             <Route path="/labs" element={<><Navbar /><Labs /><Footer /></>} />
             <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
             <Route path="/login" element={<LoginPageLayout />} />
-            <Route path="/register" element={<RegisterPageLayout />} />
+            <Route path="/register" element={<Register/>} />
             <Route path="/profile" element={<><Navbar /><Profile /><Footer /></>} />
           </Routes>
         </div>
