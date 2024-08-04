@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import '../../index.css'; // Import the CSS for animations
+import '../../index.css'; 
 
 function LoginModal({ onClose }) {
   const { login } = useAuth();
@@ -9,21 +9,21 @@ function LoginModal({ onClose }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true); // Trigger the fade-in animation on mount
+    setIsVisible(true); 
   }, []);
 
   const handleClose = () => {
-    setIsVisible(false); // Trigger the fade-out animation
+    setIsVisible(false); 
     setTimeout(() => {
-      onClose(); // Call the onClose prop after the animation duration
-    }, 300); // Match the timeout with the duration of the CSS animation
+      onClose(); 
+    }, 300); 
   };
 
   const handleLogin = async () => {
     try {
       await login();
       handleClose();
-      navigate('/dashboard'); // Navigate to a specific route after login
+      navigate('/login');
     } catch (error) {
       console.error('Login failed', error);
     }
@@ -31,7 +31,7 @@ function LoginModal({ onClose }) {
 
   const handleSignUp = () => {
     handleClose();
-    navigate('/signup'); // Navigate to the signup page
+    navigate('/register');
   };
 
   return (

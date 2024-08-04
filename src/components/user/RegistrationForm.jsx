@@ -51,7 +51,6 @@ function RegistrationForm({ username, setUsername, email, setEmail, password, se
             required
           />
         </div>
-
         <PasswordStrengthIndicator strength={passwordStrength} />
         <div className="flex items-center justify-between">
           <button

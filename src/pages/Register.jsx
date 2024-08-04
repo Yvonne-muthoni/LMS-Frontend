@@ -11,6 +11,7 @@ function Register() {
   const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(""); // Added this line
   const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
@@ -88,7 +89,7 @@ function Register() {
       setPassword={setPassword}
       confirmPassword={confirmPassword}
       setConfirmPassword={setConfirmPassword}
-      passwordStrength={passwordStrength} // Pass passwordStrength as a prop
+      passwordStrength={passwordStrength} // Passed this state to RegistrationForm
       handlePasswordChange={handlePasswordChange}
       handleSubmit={handleSubmit}
       error={error}
