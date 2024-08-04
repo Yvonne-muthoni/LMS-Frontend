@@ -1,4 +1,3 @@
-// Register.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegistrationForm from "../components/user/RegistrationForm";
@@ -11,6 +10,7 @@ function Register() {
   const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(""); // Added this line
   const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
@@ -80,7 +80,7 @@ function Register() {
       setPassword={setPassword}
       confirmPassword={confirmPassword}
       setConfirmPassword={setConfirmPassword}
-      passwordStrength={passwordStrength}
+      passwordStrength={passwordStrength} // Passed this state to RegistrationForm
       handlePasswordChange={handlePasswordChange}
       handleSubmit={handleSubmit}
       error={error}
