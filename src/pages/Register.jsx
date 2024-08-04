@@ -1,72 +1,62 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import RegistrationForm from "../components/user/RegistrationForm";
+import React, { useState } from 'react';
+import RegistrationForm from '../components/user/RegistrationForm';
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("student");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [passwordStrength, setPasswordStrength] = useState(""); // Added this line
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('student');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
   const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    if (newPassword.length >= 8 && /\d/.test(newPassword) && /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+    if (newPassword.length >= 8 && /\d/.test(newPassword) && /[!@#$%^&*]/.test(newPassword)) {
       setPasswordStrength('Strong');
-    } else {
+    } else if (newPassword.length > 0) {
       setPasswordStrength('Weak');
+    } else {
+      setPasswordStrength('');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match.');
       return;
     }
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://127.0.0.1:5000/users", {
-        method: "POST",
+      const response = await fetch('http://127.0.0.1:5000/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          role,
-        }),
+        body: JSON.stringify({ username, email, password, role }),
       });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Signup failed");
+      if (data.success) {
+        setSuccess('Registration successful! You can now login.');
+        setTimeout(() => navigate('/login'), 2000); // Redirect to login page after 2 seconds
+      } else {
+        setError(data.message || 'Registration failed. Please try again.');
       }
-
-      setSuccess(data.message || "User has been created successfully");
-      localStorage.setItem("token", data.access_token);
-
-      setTimeout(() => {
-        if (role === "admin") {
-          navigate("/admin-home");
-        } else {
-          navigate("/home");
-        }
-      }, 2000); 
     } catch (err) {
-      setError(err.message || "Signup failed. Please try again.");
+      setError(err.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -80,7 +70,7 @@ function Register() {
       setPassword={setPassword}
       confirmPassword={confirmPassword}
       setConfirmPassword={setConfirmPassword}
-      passwordStrength={passwordStrength} // Passed this state to RegistrationForm
+      passwordStrength={passwordStrength}
       handlePasswordChange={handlePasswordChange}
       handleSubmit={handleSubmit}
       error={error}

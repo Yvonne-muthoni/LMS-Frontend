@@ -9,7 +9,7 @@ export default {
       colors: {
         coral: {
           500: '#FF6247',
-          600: '#FF6247',
+          700: '#FF4F34',
         },
       },
     },

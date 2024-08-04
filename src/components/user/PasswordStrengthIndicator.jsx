@@ -1,14 +1,26 @@
 import React from 'react';
 
-function PasswordStrengthIndicator({ strength }) {
+const PasswordStrengthIndicator = ({ strength }) => {
+  const getStrengthColor = () => {
+    switch (strength) {
+      case 'Strong':
+        return 'text-green-500';
+      case 'Medium':
+        return 'text-yellow-500';
+      case 'Weak':
+        return 'text-red-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
   return (
-    <div className="mb-6">
-      <p className="text-sm text-gray-600">Password Strength: {strength}</p>
-      <p className="text-sm text-gray-600">Cannot contain your name or email address</p>
-      <p className="text-sm text-gray-600">At least 8 characters</p>
-      <p className="text-sm text-gray-600">Contains a number or symbol</p>
+    <div className="mt-2">
+      <p className={`text-sm ${getStrengthColor()}`}>
+        Password Strength: {strength}
+      </p>
     </div>
   );
-}
+};
 
 export default PasswordStrengthIndicator;
