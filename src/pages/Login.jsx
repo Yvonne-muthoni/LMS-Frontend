@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../components/user/LoginForm";
 
-
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +43,7 @@ function Login() {
         setError(data.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError("Login failed. Please try again.");
+      setError(err.message || "Login failed. Please try again.");
     }
   };
 
@@ -55,8 +53,8 @@ function Login() {
       setEmail={setEmail}
       password={password}
       setPassword={setPassword}
-      error={error}
       handleSubmit={handleSubmit}
+      error={error}
     />
   );
 }

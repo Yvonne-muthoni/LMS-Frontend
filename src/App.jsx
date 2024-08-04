@@ -2,12 +2,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
+import Footer from './components/common/Footer';
 import LandingPage from './pages/LandingPage';
 import Courses from './pages/Courses';
 import CourseVideo from './pages/CourseVideo';
 import Labs from './pages/Labs';
-import Footer from './components/common/Footer';
-import Home from './pages/Home'; 
+import Home from './pages/Home';
 import { AuthProvider } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -25,7 +25,7 @@ function App() {
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:courseId" element={<CourseVideo />} />
               <Route path="/labs" element={<Labs />} />
-              <Route path="/home" element={<Home />} /> 
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
