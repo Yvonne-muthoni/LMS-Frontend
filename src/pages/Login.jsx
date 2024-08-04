@@ -1,6 +1,9 @@
+// Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "../user/ LoginForm";
+import LoginForm from "../components/user/LoginForm";
+
+
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -32,7 +35,12 @@ function Login() {
 
       if (data.success) {
         localStorage.setItem("token", data.access_token);
-        navigate("/home");
+
+        if (data.user.role === "admin") {
+          navigate("/admin-home");
+        } else {
+          navigate("/home");
+        }
       } else {
         setError(data.message || "Login failed. Please try again.");
       }
