@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import WelcomeSection from './WelcomeSection';
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
+import Login from '../../pages/Login';
+import Register from './RegistrationForm';
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -44,7 +46,7 @@ const AuthForm = () => {
               </button>
             </div>
           </div>
-          {!isSignUp ? <LoginForm /> : <RegistrationForm />}
+          {!isSignUp ? <Login /> : <Register />}
         </div>
       </div>
     </div>
