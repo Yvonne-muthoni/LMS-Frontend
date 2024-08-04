@@ -1,68 +1,69 @@
 import React, { useState, useEffect } from 'react';
+import { Box, Button, Heading, Spinner, VStack } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import TechStack from '../components/course/TechStack';
+import LearningOutcomes from '../components/course/LearningOutcomes';
 
 const CourseVideo = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const [course, setCourse] = useState(null);
+  const [courseData, setCourseData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCourse = async () => {
+    const fetchCourseData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/courses/${courseId}`);
-        setCourse(response.data);
-        setLoading(false);
+        const response = await fetch(`http://127.0.0.1:5000/courses/${courseId}`); // Adjust URL based on your backend
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        setCourseData(data);
       } catch (error) {
-        console.error('Error fetching course:', error);
-        setError('An error occurred while fetching the course. Please try again later.');
+        setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchCourse();
+    fetchCourseData();
   }, [courseId]);
 
-  if (loading) {
-    return <div className="text-center mt-8">Loading course...</div>;
-  }
+  if (loading) return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Spinner size="xl" />
+    </Box>
+  );
 
-  if (error) {
-    return <div className="text-center mt-8 text-red-500">{error}</div>;
-  }
-
-  if (!course) {
-    return <div className="text-center mt-8">Course not found.</div>;
-  }
-
-  const videoId = new URL(course.url).searchParams.get('v');
-  if (!videoId) {
-    return <div className="text-center mt-8">Invalid video URL.</div>;
-  }
+  if (error) return <Box textAlign="center" padding={4}>Error: {error}</Box>;
+  if (!courseData) return <Box textAlign="center" padding={4}>No course data available</Box>;
 
   return (
-    <div className="container mx-auto p-6">
-      <button 
-        onClick={() => navigate('/courses')}
-        className="mb-4 text-blue-600 hover:text-blue-800 transition-colors"
-      >
-        ← Back to Courses
-      </button>
-      <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
-      <div className="aspect-w-16 aspect-h-9 mb-6">
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}`}
-          title={course.title}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-        ></iframe>
-      </div>
-      <p className="text-gray-700">{course.description}</p>
-    </div>
+    <Box maxWidth="6xl" margin="auto" padding={6}>
+      <Button colorScheme="red" variant="link" marginBottom={6} fontSize="lg" onClick={() => navigate(-1)}>
+        ← Back
+      </Button>
+
+      <Box bg="gray.200" borderRadius="lg" overflow="hidden" marginBottom={6}>
+        {courseData.videoUrl && (
+          <video controls width="100%" height="auto" style={{ maxHeight: '70vh' }}>
+            <source src={courseData.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </Box>
+
+      <Box marginBottom={8}>
+        <Heading as="h1" size="2xl" marginBottom={4}>{courseData.title || 'Intro'}</Heading>
+        <Button colorScheme="red" size="lg">
+          Mark as Complete
+        </Button>
+      </Box>
+
+      <VStack spacing={8} align="stretch">
+        <TechStack techStack={courseData.techStack} />
+        <LearningOutcomes outcomes={courseData.learningOutcomes} />
+      </VStack>
+    </Box>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const labs = [
   { id: 1, title: 'Web Development', image: '/images/web-dev.jpg' },
@@ -8,6 +9,12 @@ const labs = [
 ];
 
 function LabsSection() {
+  const navigate = useNavigate();
+
+  const handleViewMoreLabsClick = () => {
+    navigate('/labs');
+  };
+
   return (
     <section className="my-16">
       <h3 className="text-3xl font-semibold mb-8">Labs</h3>
@@ -24,7 +31,10 @@ function LabsSection() {
           </div>
         ))}
       </div>
-      <button className="mt-8 px-8 py-4 bg-[#F86C6B] text-white rounded-lg text-base hover:bg-[#E55A59] transition-colors duration-300">
+      <button 
+        onClick={handleViewMoreLabsClick}
+        className="mt-8 px-8 py-4 bg-[#F86C6B] text-white rounded-lg text-base hover:bg-[#E55A59] transition-colors duration-300"
+      >
         View More Labs
       </button>
     </section>

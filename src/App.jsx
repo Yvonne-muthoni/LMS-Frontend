@@ -9,8 +9,8 @@ import Labs from './pages/Labs';
 import Home from './pages/Home';
 import { AuthProvider } from './contexts/AuthContext';
 import Profile from './pages/Profile';
-import WelcomeSection from './components/user/WelcomeSection';
 import AuthForm from './components/user/AuthForm';
+import NotFoundPage from './pages/NotFoundPage'; // Import the NotFoundPage component
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
             <Route path="/login" element={<AuthPageLayout formType="login" />} />
             <Route path="/register" element={<AuthPageLayout formType="register" />} />
             <Route path="/profile" element={<><Navbar /><Profile /><Footer /></>} />
+            <Route path="*" element={<><Navbar /><NotFoundPage /><Footer /></>} /> {/* 404 route */}
           </Routes>
         </div>
       </Router>
