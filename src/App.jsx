@@ -8,11 +8,9 @@ import CourseVideo from './pages/CourseVideo';
 import Labs from './pages/Labs';
 import Home from './pages/Home';
 import { AuthProvider } from './contexts/AuthContext';
-import Login from './pages/Login';
-
 import Profile from './pages/Profile';
 import WelcomeSection from './components/user/WelcomeSection';
-import Register from './pages/Register';
+import AuthForm from './components/user/AuthForm';
 
 function App() {
   return (
@@ -25,8 +23,8 @@ function App() {
             <Route path="/courses/:courseId" element={<><Navbar /><CourseVideo /><Footer /></>} />
             <Route path="/labs" element={<><Navbar /><Labs /><Footer /></>} />
             <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
-            <Route path="/login" element={<LoginPageLayout />} />
-            <Route path="/register" element={<Register/>} />
+            <Route path="/login" element={<AuthPageLayout formType="login" />} />
+            <Route path="/register" element={<AuthPageLayout formType="register" />} />
             <Route path="/profile" element={<><Navbar /><Profile /><Footer /></>} />
           </Routes>
         </div>
@@ -35,25 +33,9 @@ function App() {
   );
 }
 
-const LoginPageLayout = () => (
-  <div className="flex">
-    <div className="w-1/2 pr-8">
-      <WelcomeSection />
-    </div>
-    <div className="w-1/2 p-8">
-      <Login />
-    </div>
-  </div>
-);
-
-const RegisterPageLayout = () => (
-  <div className="flex">
-    <div className="w-1/2 pr-8">
-      <WelcomeSection />
-    </div>
-    <div className="w-1/2 p-8">
-      <Register />
-    </div>
+const AuthPageLayout = ({ formType }) => (
+  <div className="flex min-h-screen">
+    <AuthForm formType={formType} />
   </div>
 );
 
