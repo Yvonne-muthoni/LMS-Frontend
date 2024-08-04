@@ -12,20 +12,20 @@ function AppHeader() {
         </h1>
         <nav>
           <Link
-            to="/signup"
+            to="/register"
             className={`px-4 py-2 rounded-lg mr-2 ${
-              location.pathname === '/signup' ? 'bg-coral-500 text-white' : 'bg-coral-300 text-coral-700'
+              location.pathname === '/register' ? 'bg-coral-500 text-white' : 'bg-coral-300 text-coral-700'
             }`}
           >
-            Sign Up
+            Register
           </Link>
           <Link
-            to="/signin"
+            to="/login"
             className={`px-4 py-2 rounded-lg ${
-              location.pathname === '/signin' ? 'bg-coral-500 text-white' : 'bg-coral-300 text-coral-700'
+              location.pathname === '/login' ? 'bg-coral-500 text-white' : 'bg-coral-300 text-coral-700'
             }`}
           >
-            Sign In
+            Login
           </Link>
         </nav>
       </div>
