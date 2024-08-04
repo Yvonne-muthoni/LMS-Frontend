@@ -9,6 +9,9 @@ import Labs from './pages/Labs';
 import Footer from './components/common/Footer';
 import Home from './pages/Home'; 
 import { AuthProvider } from './contexts/AuthContext';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
               <Route path="/courses/:courseId" element={<CourseVideo />} />
               <Route path="/labs" element={<Labs />} />
               <Route path="/home" element={<Home />} /> 
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </main>
           <Footer />
