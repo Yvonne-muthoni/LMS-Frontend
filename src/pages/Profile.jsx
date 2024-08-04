@@ -1,8 +1,10 @@
 import React from 'react'
 
-function Profile() {
+const Profile = () => {
   return (
-    <div>Profile</div>
+    <div>
+      
+    </div>
   )
 }
 
