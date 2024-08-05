@@ -1,28 +1,18 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
-  // Retrieve the username from localStorage or use a default value
-  const username = localStorage.getItem('username') || 'User';
-  const userInitial = username.charAt(0).toUpperCase(); // Get the first letter of the username
 
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to={isAuthenticated ? "/home" : "/"} className="text-2xl font-bold text-black">
+        <Link to="/" className="text-2xl font-bold text-black">
           SkillQuest 🧠
         </Link>
         <nav>
-          <ul className="flex items-center space-x-6">
+          <ul className="flex space-x-6">
             <li>
               <Link 
                 to="/subscription" 
@@ -31,18 +21,14 @@ function Navbar() {
                 PRO
               </Link>
             </li>
-            {isAuthenticated && (
-              <>
-                <li>
-                  <Link 
-                    to="/home" 
-                    className="text-black font-bold hover:text-coral-500 transition-colors"
-                  >
-                    Home
-                  </Link>
-                </li>
-              </>
-            )}
+            <li>
+              <Link 
+                to="/home" 
+                className="text-black font-bold hover:text-coral-500 transition-colors"
+              >
+                Home
+              </Link>
+            </li>
             <li>
               <Link 
                 to="/labs" 
@@ -60,15 +46,9 @@ function Navbar() {
               </Link>
             </li>
             {isAuthenticated ? (
-              <li className="flex items-center space-x-2">
-                <div
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-[#FF6247] text-white font-bold text-lg shadow-lg"
-                  style={{ lineHeight: '3rem' }} // Adjust line height to center the text vertically
-                >
-                  {userInitial}
-                </div>
+              <li>
                 <button 
-                  onClick={handleLogout} 
+                  onClick={logout} 
                   className="text-white font-bold bg-coral-500 px-4 py-2 rounded-md hover:bg-coral-600 transition-colors"
                   aria-label="Logout"
                 >

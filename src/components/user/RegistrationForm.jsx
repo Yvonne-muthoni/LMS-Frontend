@@ -69,7 +69,7 @@ const RegistrationForm = ({ username, setUsername, email, setEmail, password, se
           _focus={{ borderColor: colorScheme, boxShadow: `0 0 0 1px ${colorScheme}` }}
         >
           <option value="">Select your role</option>
-          <option value="user">User</option>
+          <option value="user">Student</option>
           <option value="admin">Admin</option>
         </Select>
       </FormControl>

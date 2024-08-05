@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TutorialCard from './TutorialCard';
@@ -8,7 +9,7 @@ function TutorialCards() {
   useEffect(() => {
     const fetchTutorials = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5001/courses'); 
+        const response = await axios.get('http://127.0.0.1:5000/courses'); 
         setTutorials(response.data);
       } catch (error) {
         console.error('Error fetching tutorials:', error);
@@ -18,8 +19,7 @@ function TutorialCards() {
     fetchTutorials();
   }, []);
 
-  // Display a subset of tutorials
-  const displayedTutorials = tutorials.slice(0, 3); // Adjust this based on your needs
+  const displayedTutorials = tutorials.slice(13,16);
 
   return (
     <section className="py-16 bg-[#FF6247]">
@@ -33,11 +33,10 @@ function TutorialCards() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedTutorials.map((tutorial) => (
             <TutorialCard
-              key={tutorial.id} // Correctly use `tutorial.id`
+              key={tutorial.id}
               title={tutorial.title}
               description={tutorial.description}
-              url={tutorial.video} // Assuming `video` contains the URL
-              tags={tutorial.techStack} // Pass tags to TutorialCard
+              url={tutorial.url}
             />
           ))}
         </div>

@@ -1,146 +1,68 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Heading,
-  Spinner,
-  VStack,
-  Text,
-  useToast,
-} from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router-dom";
-import TechStack from "../components/course/TechStack";
-import LearningOutcomes from "../components/course/LearningOutcomes";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CourseVideo = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const toast = useToast();
-  const [courseData, setCourseData] = useState(null);
+  const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
-    const fetchCourseData = async () => {
+    const fetchCourse = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5001/courses/${courseId}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch course data");
-        }
-        const data = await response.json();
-        setCourseData(data);
-        setCompleted(
-          localStorage.getItem(`course_${courseId}_completed`) === "true"
-        );
+        const response = await axios.get(`http://127.0.0.1:5000/courses/${courseId}`);
+        setCourse(response.data);
+        setLoading(false);
       } catch (error) {
-        setError(error.message);
-      } finally {
+        console.error('Error fetching course:', error);
+        setError('An error occurred while fetching the course. Please try again later.');
         setLoading(false);
       }
     };
 
-    fetchCourseData();
+    fetchCourse();
   }, [courseId]);
 
-  const handleMarkAsComplete = () => {
-    setCompleted(true);
-    localStorage.setItem(`course_${courseId}_completed`, "true");
-    toast({
-      title: "Course Completed!",
-      description: "Great job on finishing the course!",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
-
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <Spinner size="xl" />
-      </Box>
-    );
+    return <div className="text-center mt-8">Loading course...</div>;
   }
 
   if (error) {
-    return (
-      <Box textAlign="center" padding={4}>
-        <Text color="red.500" fontWeight="bold">
-          Error: {error}
-        </Text>
-      </Box>
-    );
+    return <div className="text-center mt-8 text-red-500">{error}</div>;
   }
 
-  if (!courseData) {
-    return (
-      <Box textAlign="center" padding={4}>
-        <Text color="gray.500">No course data available</Text>
-      </Box>
-    );
+  if (!course) {
+    return <div className="text-center mt-8">Course not found.</div>;
   }
 
-  const videoId = courseData.video?.split("v=")[1];
+  const videoId = new URL(course.url).searchParams.get('v');
+  if (!videoId) {
+    return <div className="text-center mt-8">Invalid video URL.</div>;
+  }
 
   return (
-    <Box maxWidth="8xl" margin="auto" padding={6}>
-      <Button
-        color="#FF6247"
-        variant="solid"
-        marginBottom={6}
-        fontSize="lg"
-        onClick={() => navigate(-1)}
+    <div className="container mx-auto p-6">
+      <button 
+        onClick={() => navigate('/courses')}
+        className="mb-4 text-blue-600 hover:text-blue-800 transition-colors"
       >
         ← Back to Courses
-      </Button>
-
-      <Heading as="h1" size="2xl" marginBottom={6}>
-        {courseData.title}
-      </Heading>
-
-      {videoId ? (
-        <Box bg="gray.100" borderRadius="lg" overflow="hidden" marginBottom={6}>
-          <iframe
-            width="900px"
-            height="500px"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title={courseData.title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </Box>
-      ) : (
-        <Box textAlign="center" padding={4}>
-          <Text color="gray.500">No video available for this course</Text>
-        </Box>
-      )}
-
-      <Button
-        backgroundColor={completed ? "#28a745" : "#FF6247"} // Green for completed, Coral color for not completed
-        color="white" // Ensure text is readable
-        size="lg"
-        width="full"
-        onClick={handleMarkAsComplete}
-        disabled={completed}
-        marginBottom={8}
-      >
-        {completed ? "Completed!" : "Mark as Complete"}
-      </Button>
-
-      <VStack spacing={8} align="stretch">
-        <TechStack techStack={courseData.techStack} />
-        <LearningOutcomes outcomes={courseData.whatYouWillLearn} />
-      </VStack>
-    </Box>
+      </button>
+      <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
+      <div className="aspect-w-16 aspect-h-9 mb-6">
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}`}
+          title={course.title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+        ></iframe>
+      </div>
+      <p className="text-gray-700">{course.description}</p>
+    </div>
   );
 };
 

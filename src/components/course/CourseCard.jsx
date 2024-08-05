@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import LoginModal from '../common/LoginModal';
 
-function CourseCard({ id, title, description, image, tags }) {
+function CourseCard({ id, title, description, url, tags }) {
   const { isAuthenticated, login } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -19,16 +19,17 @@ function CourseCard({ id, title, description, image, tags }) {
   const handleLogin = async () => {
     try {
       await login();
-      setShowModal(false);
-      navigate(`/courses/${id}`);
+      setShowModal(false);  // Close the modal
+      navigate(`/courses/${id}`);  // Navigate to the course page
     } catch (error) {
       console.error('Login failed', error);
+      // Optionally, show an error message or handle the login failure
     }
   };
 
   const handleSignUp = () => {
-    setShowModal(false);
-    navigate('/signup');
+    setShowModal(false);  // Close the modal
+    navigate('/signup');  // Navigate to the sign-up page
   };
 
   return (
@@ -41,7 +42,7 @@ function CourseCard({ id, title, description, image, tags }) {
         {/* Thumbnail */}
         <div className="relative" style={{ width: '100%', height: '45%' }}>
           <img
-            src={image}
+            src={`https://img.youtube.com/vi/${url.split('v=')[1]}/maxresdefault.jpg`}
             alt={title || 'Course Thumbnail'}
             className="absolute inset-0 w-full h-full object-cover rounded-t-2xl"
           />

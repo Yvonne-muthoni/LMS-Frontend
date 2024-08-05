@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Button, Box } from '@chakra-ui/react';
 import WelcomeSection from './WelcomeSection';
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
@@ -11,36 +9,14 @@ import Register from './RegistrationForm';
 const AuthForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSignUp, setIsSignUp] = useState(location.pathname === '/register');
-  const [fade, setFade] = useState(false);
-
-  useEffect(() => {
-    setFade(true);
-    const timer = setTimeout(() => setFade(false), 300); // Delay for smooth transition
-    return () => clearTimeout(timer);
-  }, [isSignUp]);
+  const isSignUp = location.pathname === '/register';
 
   const toggleForm = (signUp) => {
-    setFade(true);
-    setTimeout(() => {
-      setIsSignUp(signUp);
-      navigate(signUp ? '/register' : '/login');
-    }, 300); // Sync with the fade-out duration
+    navigate(signUp ? '/register' : '/login');
   };
 
   return (
     <div className="min-h-screen mx-auto flex items-center justify-center">
-      <div className="absolute top-4 left-4">
-        <Button
-          leftIcon={<ArrowBackIcon />}
-          color="#FF6247"
-          variant="ghost"
-          fontSize="lg"
-          onClick={() => navigate('/')}
-        >
-          Back
-        </Button>
-      </div>
       <div className="max-w-5xl w-full mx-auto flex rounded-lg overflow-hidden">
         {/* WelcomeSection */}
         <WelcomeSection />

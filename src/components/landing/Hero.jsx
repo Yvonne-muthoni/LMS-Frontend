@@ -8,8 +8,8 @@ function Hero() {
     useEffect(() => {
         const fetchFeaturedCourse = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/courses');
-                setFeaturedCourse(response.data[0] || null); // Use the first course for demonstration
+                const response = await axios.get('http://localhost:5000/courses');
+                setFeaturedCourse(response.data[2] || null); // Select the first course or set to null if no courses
             } catch (error) {
                 console.error('Error fetching featured course:', error);
                 setFeaturedCourse(null);
@@ -20,7 +20,6 @@ function Hero() {
     }, []);
 
     const getYouTubeVideoId = (url) => {
-        if (!url) return null;
         const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
         const match = url.match(regex);
         return match ? match[1] : null;
@@ -64,7 +63,7 @@ function Hero() {
                                     <div className='relative pb-[56.25%] h-0 overflow-hidden rounded-xl'>
                                         <iframe
                                             className='absolute top-0 left-0 w-full h-full rounded-xl'
-                                            src={`https://www.youtube.com/embed/${getYouTubeVideoId(featuredCourse.video)}`}
+                                            src={`https://www.youtube.com/embed/${getYouTubeVideoId(featuredCourse.url)}`}
                                             allow='accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
                                             frameBorder='0'
                                             title='YouTube video'
