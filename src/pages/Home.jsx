@@ -13,7 +13,7 @@ function Home() {
       <header>
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-custom">
           <h2 className="text-5xl font-semibold text-gray-900">
-            Hi, {user ? user.username : 'Guest'} 👋🏽
+            Hi, {user ? user.username : 'Student'} 👋🏽
           </h2>
         </div>
       </header>

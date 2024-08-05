@@ -7,8 +7,8 @@ import Courses from './pages/Courses';
 import CourseVideo from './pages/CourseVideo';
 import Labs from './pages/Labs';
 import Home from './pages/Home';
+import NotFoundPage from './pages/NotFoundPage'; // Import the NotFoundPage component
 import { AuthProvider } from './contexts/AuthContext';
-import WelcomeSection from './components/user/WelcomeSection';
 import AuthForm from './components/user/AuthForm';
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
             <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
             <Route path="/login" element={<AuthPageLayout formType="login" />} />
             <Route path="/register" element={<AuthPageLayout formType="register" />} />
+            <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
           </Routes>
         </div>
       </Router>

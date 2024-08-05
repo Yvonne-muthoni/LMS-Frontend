@@ -11,12 +11,12 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/courses');
+        const response = await axios.get('http://127.0.0.1:5001/courses');
         setCourses(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching courses:', error);
         setError('An error occurred while fetching courses. Please try again later.');
+      } finally {
         setLoading(false);
       }
     };
