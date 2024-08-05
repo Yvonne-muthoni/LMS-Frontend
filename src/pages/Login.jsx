@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LoginForm from '../components/user/LoginForm';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
-import { useAuth } from '../contexts/AuthContext'; // Import useAuth
+import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const toast = useToast();
-  const { login } = useAuth(); // Use the login function from AuthContext
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ function Login() {
 
       if (data.success) {
         localStorage.setItem('token', data.access_token);
-        login(); // Call the login function to update the authentication state
+        login(data.user);
         toast({
           title: 'Login successful.',
           description: "You have been successfully logged in.",
