@@ -1,4 +1,3 @@
-// components/course/CourseCard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -57,9 +56,9 @@ function CourseCard({ id, title, description, image, tags }) {
               {displayTags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-2"
+                  className="inline-block bg-coral-500 text-white text-xs px-2 py-1 rounded-full mr-2 mb-2"
                 >
-                  {tag}
+                  #{tag}
                 </span>
               ))}
             </div>
