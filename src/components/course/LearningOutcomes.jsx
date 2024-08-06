@@ -35,7 +35,7 @@ const LearningOutcomes = ({ outcomes }) => {
               _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
             >
               <HStack spacing={2} alignItems="flex-start">
-                <Text>{outcome.icon}</Text>
+                <Text>{outcome.icon || '🌟'}</Text>
                 <Text>{outcome.text}</Text>
               </HStack>
             </Box>
