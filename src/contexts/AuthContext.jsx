@@ -1,3 +1,4 @@
+// src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setIsAuthenticated(true);
     setUser(userData);
+    localStorage.setItem('token', 'dummy-token'); 
   };
 
   const logout = () => {
