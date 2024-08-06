@@ -38,7 +38,9 @@ function Login() {
           duration: 5000,
           isClosable: true,
         });
-        navigate(data.user.role === 'admin' ? '/admin-home' : '/home', { replace: true });
+        navigate(
+          data.user.role === "/admin-dashboard" ? "/admin-dashboard" : "/home"
+        );
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }
