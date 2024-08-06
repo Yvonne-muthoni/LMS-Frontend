@@ -62,7 +62,7 @@ const RegistrationForm = () => {
           duration: 5000,
           isClosable: true,
         });
-        navigate("/home");
+        navigate("/login");
       } else {
         throw new Error(data.message || "Registration failed");
       }
