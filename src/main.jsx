@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
-import { AuthProvider } from "./contexts/AuthContext"; // Ensure this path is correct
+import { AuthProvider } from "./contexts/AuthContext"; 
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
     <AuthProvider>
       <ChakraProvider>
