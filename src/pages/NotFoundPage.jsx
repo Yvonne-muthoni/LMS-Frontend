@@ -9,7 +9,7 @@ const NotFoundPage = () => {
         <h2 className="text-2xl font-semibold mb-2">Page Not Found</h2>
         <p className="text-gray-700 mb-6">Sorry, the page you are looking for does not exist.</p>
         <Link to="/" className="bg-[#FF6247] text-white py-2 px-4 rounded-lg text-lg font-semibold hover:bg-[#FF3C3C] transition-colors">
-          Go Back to Home
+          Go Back to Homee
         </Link>
       </div>
     </div>
