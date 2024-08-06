@@ -7,31 +7,55 @@ function LoginModal({ onClose }) {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    setIsVisible(true); 
+    setIsVisible(true);
   }, []);
 
   const handleClose = () => {
-    setIsVisible(false); 
+    setIsVisible(false);
     setTimeout(() => {
-      onClose(); 
-    }, 300); 
+      onClose();
+    }, 300);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
     try {
-      await login();
-      handleClose();
-      navigate('/login');
+      const response = await fetch('http://127.0.0.1:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        await login(data.user, data.access_token);
+        handleClose();
+        setTimeout(() => {
+          navigate(data.user.role === 'admin' ? '/admin-home' : '/home', { replace: true });
+        }, 100);
+      } else {
+        setError(data.message || 'Login failed');
+      }
     } catch (error) {
       console.error('Login failed', error);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignUp = () => {
     handleClose();
-    navigate('/register');
+    navigate('/register', { replace: true });
   };
 
   return (
@@ -54,20 +78,39 @@ function LoginModal({ onClose }) {
         </button>
         <h2 className="text-3xl font-bold mb-2 text-center text-gray-800">Welcome Back</h2>
         <p className="mb-8 text-center text-gray-600">Log in to access the labs</p>
-        <div className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6247]"
+            required
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6247]"
+            required
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
-            onClick={handleLogin}
-            className="w-full bg-[#FF6247] text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105"
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[#FF6247] text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
           >
-            Log In
+            {isLoading ? 'Logging in...' : 'Log In'}
           </button>
-          <button
-            onClick={handleSignUp}
-            className="w-full bg-white text-[#FF6247] px-6 py-3 rounded-lg font-semibold border-2 border-[#FF6247] hover:bg-[#FF6247] hover:text-white transition-all duration-200 transform hover:scale-105"
-          >
-            Sign Up
-          </button>
-        </div>
+        </form>
+        <button
+          onClick={handleSignUp}
+          disabled={isLoading}
+          className="w-full mt-4 bg-white text-[#FF6247] px-6 py-3 rounded-lg font-semibold border-2 border-[#FF6247] hover:bg-[#FF6247] hover:text-white transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+        >
+          Sign Up
+        </button>
         <p className="mt-6 text-center text-sm text-gray-500">
           By continuing, you agree to our <a href="#" className="text-[#FF6247] hover:underline">Terms of Service</a> and <a href="#" className="text-[#FF6247] hover:underline">Privacy Policy</a>.
         </p>

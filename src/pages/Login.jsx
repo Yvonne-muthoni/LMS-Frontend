@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import LoginForm from '../components/user/LoginForm';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '../contexts/AuthContext';
+import LoginForm from '../components/user/LoginForm'; // Adjust the import path as necessary
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setError('');
 
     try {
@@ -25,15 +27,10 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
       const data = await response.json();
 
-      if (data.success) {
-        localStorage.setItem('token', data.access_token);
-        login(data.user);
+      if (response.ok) {
+        await login(data.user, data.access_token);
         toast({
           title: 'Login successful.',
           description: "You have been successfully logged in.",
@@ -41,36 +38,26 @@ function Login() {
           duration: 5000,
           isClosable: true,
         });
-        navigate(data.user.role === 'admin' ? '/admin-home' : '/home');
+        navigate(data.user.role === 'admin' ? '/admin-home' : '/home', { replace: true });
       } else {
-        toast({
-          title: 'Login failed.',
-          description: data.message || 'Please try again.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        setError(data.message || 'Login failed. Please try again.');
       }
     } catch (err) {
-      toast({
-        title: 'Login failed.',
-        description: err.message || 'Please try again.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <LoginForm
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      handleSubmit={handleSubmit}
-      error={error}
-    />
+        <LoginForm
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          handleSubmit={handleSubmit}
+          error={error}
+        />
   );
 }
 

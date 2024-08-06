@@ -21,14 +21,16 @@ function Navbar() {
                 PRO
               </Link>
             </li>
-            <li>
-              <Link 
-                to="/home" 
-                className="text-black font-bold hover:text-coral-500 transition-colors"
-              >
-                Home
-              </Link>
-            </li>
+            {isAuthenticated && (
+              <li>
+                <Link 
+                  to="/home" 
+                  className="text-black font-bold hover:text-coral-500 transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+            )}
             <li>
               <Link 
                 to="/labs" 
