@@ -11,6 +11,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Profile from './pages/Profile';
 import WelcomeSection from './components/user/WelcomeSection';
 import AuthForm from './components/user/AuthForm';
+import Subscription from './pages/Subscription';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/courses" element={<><Navbar /><Courses /><Footer /></>} />
             <Route path="/courses/:courseId" element={<><Navbar /><CourseVideo /><Footer /></>} />
             <Route path="/labs" element={<><Navbar /><Labs /><Footer /></>} />
+            <Route path="/subscription" element={<><Navbar /><Subscription /><Footer /></>} />
             <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
             <Route path="/login" element={<AuthPageLayout formType="login" />} />
             <Route path="/register" element={<AuthPageLayout formType="register" />} />

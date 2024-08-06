@@ -19,17 +19,16 @@ function CourseCard({ id, title, description, url, tags }) {
   const handleLogin = async () => {
     try {
       await login();
-      setShowModal(false);  // Close the modal
-      navigate(`/courses/${id}`);  // Navigate to the course page
+      setShowModal(false);  
+      navigate(`/courses/${id}`); 
     } catch (error) {
       console.error('Login failed', error);
-      // Optionally, show an error message or handle the login failure
     }
   };
 
   const handleSignUp = () => {
-    setShowModal(false);  // Close the modal
-    navigate('/signup');  // Navigate to the sign-up page
+    setShowModal(false);  
+    navigate('/register');  
   };
 
   return (

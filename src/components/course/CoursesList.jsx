@@ -63,7 +63,6 @@ const CoursesList = () => {
     if (!isAuthenticated) {
       openModal();
     } else {
-      // Perform action for authenticated users
     }
   };
 
@@ -98,14 +97,12 @@ const CoursesList = () => {
             try {
               await login();
               closeModal();
-              // Handle post-login action, such as navigating to a course
             } catch (err) {
               console.error('Login failed', err);
             }
           }}
           onSignUp={() => {
             closeModal();
-            // Navigate to sign-up page or handle sign-up logic
           }}
         />
       )}

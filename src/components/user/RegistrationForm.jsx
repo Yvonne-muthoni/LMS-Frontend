@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PasswordStrengthIndicator from "./PasswordStrengthIndicator"; // Ensure this is correctly imported
+import PasswordStrengthIndicator from "./PasswordStrengthIndicator"; 
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("Weak");
-  const [role, setRole] = useState(""); // Add role state
+  const [role, setRole] = useState("Student");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  // Handle password changes and update strength
+ 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    // Example logic for password strength; adjust as needed
     setPasswordStrength(newPassword.length > 8 ? "Strong" : "Weak");
   };
 
@@ -26,12 +25,12 @@ const Register = () => {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5000/users", {
+      const response = await fetch("http://127.0.0.1:5000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password, role }), 
+        body: JSON.stringify({ username, email, password, role }),
       });
 
       const data = await response.json();
@@ -118,7 +117,6 @@ const Register = () => {
             Select your role
           </option>
           <option value="user">Student</option>
-          <option value="admin">Admin</option>
         </select>
       </div>
       <PasswordStrengthIndicator strength={passwordStrength} />
