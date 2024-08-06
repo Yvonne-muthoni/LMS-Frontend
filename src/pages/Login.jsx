@@ -41,7 +41,9 @@ function Login() {
           duration: 5000,
           isClosable: true,
         });
-        navigate(data.user.role === 'admin' ? '/admin-home' : '/home');
+        navigate(
+          data.user.role === "/admin-dashboard" ? "/admin-dashboard" : "/home"
+        );
       } else {
         toast({
           title: 'Login failed.',

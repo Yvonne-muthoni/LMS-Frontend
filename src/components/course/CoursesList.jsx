@@ -44,7 +44,6 @@ const CoursesList = ({ courses }) => {
     if (!isAuthenticated) {
       setIsModalOpen(true);
     } else {
-      // Perform action for authenticated users
     }
   };
 
