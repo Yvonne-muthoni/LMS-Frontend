@@ -1,36 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// components/course/CoursesList.js
+import React, { useState } from 'react';
 import CourseCard from './CourseCard';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import LoginModal from '../common/LoginModal';
+import { Spinner, Box, Flex, Grid } from '@chakra-ui/react';
 import { useAuth } from '../../contexts/AuthContext';
-import { Spinner, Alert, AlertIcon, AlertTitle, AlertDescription, Box, Flex, Grid, useDisclosure } from '@chakra-ui/react';
+import LoginModal from '../common/LoginModal';
 
 const ITEMS_PER_PAGE = 4;
 
-const CoursesList = () => {
-  const [courses, setCourses] = useState([]);
+const CoursesList = ({ courses }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated, login } = useAuth();
-  const { isOpen: isModalOpen, onOpen: openModal, onClose: closeModal } = useDisclosure();
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get('http://127.0.0.1:5000/courses');
-        setCourses(response.data);
-      } catch (err) {
-        setError(err.message || 'An error occurred while fetching courses');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
-  }, []);
 
   const pageCount = Math.ceil(courses.length / ITEMS_PER_PAGE);
 
@@ -61,27 +42,11 @@ const CoursesList = () => {
 
   const handleCourseCardClick = () => {
     if (!isAuthenticated) {
-      openModal();
+      setIsModalOpen(true);
     } else {
       // Perform action for authenticated users
     }
   };
-
-  if (loading) return (
-    <Flex justify="center" align="center" height="100vh">
-      <Spinner size="xl" />
-    </Flex>
-  );
-
-  if (error) return (
-    <Alert status="error" mb={4}>
-      <AlertIcon />
-      <Box>
-        <AlertTitle>Error fetching courses</AlertTitle>
-        <AlertDescription>{error}</AlertDescription>
-      </Box>
-    </Alert>
-  );
 
   if (courses.length === 0) return (
     <Box textAlign="center" p={4}>
@@ -93,18 +58,18 @@ const CoursesList = () => {
     <Box p={4}>
       {isModalOpen && (
         <LoginModal
-          onClose={closeModal}
+          onClose={() => setIsModalOpen(false)}
           onLogin={async () => {
             try {
               await login();
-              closeModal();
+              setIsModalOpen(false);
               // Handle post-login action, such as navigating to a course
             } catch (err) {
               console.error('Login failed', err);
             }
           }}
           onSignUp={() => {
-            closeModal();
+            setIsModalOpen(false);
             // Navigate to sign-up page or handle sign-up logic
           }}
         />
@@ -116,9 +81,9 @@ const CoursesList = () => {
             id={course.id}
             title={course.title}
             description={course.description}
-            url={course.url}
-            tags={course.tags}
-            onClick={handleCourseCardClick}
+            image={course.image}
+            tags={course.techStack}
+            onClick={handleCourseCardClick}  // Add onClick handler if needed
           />
         ))}
       </Grid>
