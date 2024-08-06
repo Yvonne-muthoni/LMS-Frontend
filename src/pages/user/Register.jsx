@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator"; // Ensure this is correctly imported
-import RegistrationForm from "../components/user/RegistrationForm";
+import RegistrationForm from "../../components/user/RegistrationForm";
 
 const Register = () => {
   const [username, setUsername] = useState("");

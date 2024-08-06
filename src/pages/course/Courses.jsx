@@ -1,7 +1,7 @@
 // pages/Courses.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CoursesList from '../components/course/CoursesList';
+import CoursesList from '../../components/course/CoursesList';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -11,12 +11,12 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/courses');
+        const response = await axios.get('http://127.0.0.1:5001/courses');
         setCourses(response.data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching courses:', error);
         setError('An error occurred while fetching courses. Please try again later.');
-      } finally {
         setLoading(false);
       }
     };

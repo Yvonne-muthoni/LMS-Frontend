@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Heading, Spinner, VStack, Text, useToast } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TechStack from '../components/course/TechStack';
-import LearningOutcomes from '../components/course/LearningOutcomes';
+import TechStack from '../../components/course/TechStack';
+import LearningOutcomes from '../../components/course/LearningOutcomes';
 
 const CourseVideo = () => {
   const { courseId } = useParams();
@@ -16,7 +16,7 @@ const CourseVideo = () => {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/courses/${courseId}`);
+        const response = await fetch(`http://localhost:5001/courses/${courseId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch course data');
         }

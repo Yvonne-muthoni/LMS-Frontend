@@ -1,4 +1,7 @@
+// src/dashboard/Results.jsx
 import React, { useState } from 'react';
+import SemesterSelector from '../../components/dashboards/results/SemesterSelector';
+import SubjectCard from '../../components/dashboards/results/SubjectCard';
 
 const resultsData = [
   {
@@ -28,14 +31,7 @@ const Results = () => {
     const semesterData = resultsData.find((sem) => sem.semester === selectedSemester);
     return semesterData ? (
       semesterData.subjects.map((subject, index) => (
-        <div key={index} className="bg-white p-4 rounded-lg shadow-md mt-2">
-          <h3 className="text-lg font-semibold">{subject.name}</h3>
-          <p>Grade: <span className="font-bold">{subject.grade}</span></p>
-          <details className="mt-2">
-            <summary className="cursor-pointer text-blue-500 hover:underline">View Details</summary>
-            <p>{subject.details}</p>
-          </details>
-        </div>
+        <SubjectCard key={index} subject={subject} />
       ))
     ) : (
       <p>No results available for this semester.</p>
@@ -50,19 +46,11 @@ const Results = () => {
       <section className="mt-4">
         <h2 className="text-xl font-semibold">View Your Results</h2>
         <p className="mt-2">Check your exam results, grades, and academic progress here.</p>
-        <div className="mt-4">
-          <label htmlFor="semester" className="block text-lg font-medium text-gray-700">Select Semester</label>
-          <select
-            id="semester"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            value={selectedSemester}
-            onChange={handleSemesterChange}
-          >
-            {resultsData.map((sem, index) => (
-              <option key={index} value={sem.semester}>{sem.semester}</option>
-            ))}
-          </select>
-        </div>
+        <SemesterSelector
+          semesters={resultsData}
+          selectedSemester={selectedSemester}
+          onSemesterChange={handleSemesterChange}
+        />
         <div className="mt-4">
           {renderResults()}
         </div>

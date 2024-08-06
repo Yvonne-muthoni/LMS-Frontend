@@ -1,13 +1,74 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faUser, 
+  faUserCircle, 
+  faCog, 
+  faSignOutAlt,
+  faCrown,
+  faGraduationCap,
+  faUserShield
+} from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      verifyToken(token);
+    }
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  const verifyToken = async (token) => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/verify-token', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIsAuthenticated(true);
+        setUser(data.user);
+      } else {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setUser(null);
+    navigate('/login');
   };
 
   return (
@@ -16,74 +77,91 @@ function Navbar() {
         <Link to="/" className="text-2xl font-bold text-black">
           SkillQuest 🧠
         </Link>
-        <button
-          className="block lg:hidden text-black focus:outline-none"
-          onClick={toggleMenu}
-          aria-label="Toggle Navigation"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        </button>
-        <nav className={`lg:flex ${isOpen ? "block" : "hidden"} lg:block`}>
-          <ul className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
+        <nav>
+          <ul className="flex space-x-6 items-center">
             <li>
-              <Link
-                to="/subscription"
+              <Link 
+                to="/subscription" 
                 className="text-coral-500 font-bold border-2 border-coral-500 px-2 py-0.5 rounded-md hover:bg-coral-500 hover:text-white transition-colors"
               >
+                <FontAwesomeIcon icon={faCrown} className="mr-1" />
                 PRO
               </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link 
+                  to="/home" 
+                  className="text-black font-bold hover:text-coral-500 transition-colors"
+                >
+                  <FontAwesomeIcon className="mr-1" />
+                  Home
+                </Link>
+              </li>
+            )}
             <li>
-              <Link
-                to="/home"
+              <Link 
+                to="/labs" 
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/labs"
-                className="text-black font-bold hover:text-coral-500 transition-colors"
-              >
+                <FontAwesomeIcon className="mr-1" />
                 Labs
               </Link>
             </li>
             <li>
-              <Link
-                to="/courses"
+              <Link 
+                to="/courses" 
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
+                <FontAwesomeIcon className="mr-1" />
                 Courses
               </Link>
             </li>
             {isAuthenticated ? (
-              <li>
-                <button
-                  onClick={logout}
-                  className="text-white font-bold bg-coral-500 px-4 py-2 rounded-md hover:bg-coral-600 transition-colors"
-                  aria-label="Logout"
+              <li className="relative" ref={dropdownRef}>
+                <button 
+                  onClick={toggleDropdown}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-[#FF6247] text-white hover:bg-[#FF6247]/80 transition-colors"
+                  aria-label="User menu"
                 >
-                  Logout
+                  <FontAwesomeIcon icon={faUser} size="lg" />
                 </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-md shadow-lg py-1 z-10">
+                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <FontAwesomeIcon icon={faUserCircle} className="mr-2 w-4" />
+                      Profile
+                    </Link>
+                    {user && user.role === 'user' && (
+                      <Link to="/student-dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faGraduationCap} className="mr-2 w-4" />
+                        Student Dashboard
+                      </Link>
+                    )}
+                    {user && user.role === 'admin' && (
+                      <Link to="/admin-dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faUserShield} className="mr-2 w-4" />
+                        Admin Dashboard
+                      </Link>
+                    )}
+                    <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <FontAwesomeIcon icon={faCog} className="mr-2 w-4" />
+                      Settings
+                    </Link>
+                    <button 
+                      onClick={logout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <FontAwesomeIcon icon={faSignOutAlt} className="mr-2 w-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
               </li>
             ) : (
               <li>
-                <Link
-                  to="/login"
+                <Link 
+                  to="/login" 
                   className="text-white font-bold bg-coral-500 px-4 py-2 rounded-md hover:bg-coral-600 transition-colors"
                 >
                   Login

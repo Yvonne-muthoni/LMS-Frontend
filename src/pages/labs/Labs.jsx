@@ -1,8 +1,8 @@
 // pages/Labs.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchBar from '../components/labs/SearchBar';
-import CategoryGrid from '../components/labs/CategoryGrid';
+import SearchBar from '../../components/labs/SearchBar';
+import CategoryGrid from '../../components/labs/CategoryGrid';
 
 function Labs() {
   const [searchTerm, setSearchTerm] = useState('');

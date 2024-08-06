@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import HeroSection from '../components/home/HeroSection';
-import RecommendedSection from '../components/home/RecommendedSection';
-import LabsSection from '../components/home/LabsSection';
-import '../index.css'; 
+import { useAuth } from '../../contexts/AuthContext';
+import HeroSection from '../../components/home/HeroSection';
+import RecommendedSection from '../../components/home/RecommendedSection';
+import LabsSection from '../../components/home/LabsSection';
+import '../../index.css'; 
 
 function Home() {
   const { user } = useAuth();

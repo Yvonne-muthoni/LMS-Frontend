@@ -1,61 +1,160 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { NotificationProvider } from './contexts/NotificationContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
-import LandingPage from './pages/LandingPage';
-import Courses from './pages/Courses';
-import CourseVideo from './pages/CourseVideo';
-import Labs from './pages/Labs';
-import Home from './pages/Home';
+import LandingPage from './pages/landing/LandingPage';
+import Courses from './pages/course/Courses';
+import CourseVideo from './pages/course/CourseVideo';
+import Labs from './pages/labs/Labs';
+import Home from './pages/home/Home';
 import NotFoundPage from './pages/NotFoundPage';
-import StudentDashboard from "./components/dashboards/StudentDashboard";
-import AdminDashboard from "./components/dashboards/AdminDashboard";
-import Registration from './components/Registration';
-import Finance from './components/Finance';
-import Results from './components/Results';
-import Instructors from './components/Instructors';
-import Header from './components/Header';
-
+import Finance from './pages/dashboard/Finance';
+import Instructors from './pages/dashboard/Instructors';
+import Results from './pages/dashboard/Results';
+import StudentDashboard from './pages/dashboard/StudentDashboard';
+import AdminDashboard from './pages/dashboard/AdminDashboard';
 import AuthForm from './components/user/AuthForm';
-import './index.css';
-import Subscription from './pages/Subscription';
+import Subscription from './pages/subscriptions/Subscription';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 
 function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
         <Router>
-          <div className="flex flex-col min-h-screen">
-            <Routes>
-              <Route path="/" element={<><Navbar /><LandingPage /><Footer /></>} />
-              <Route path="/courses" element={<><Navbar /><Courses /><Footer /></>} />
-              <Route path="/courses/:courseId" element={<><Navbar /><CourseVideo /><Footer /></>} />
-              <Route path="/labs" element={<><Navbar /><Labs /><Footer /></>} />
-              <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
-              <Route path="/subscription" element={<><Navbar /><Subscription /><Footer /></>} />
-              <Route path="/login" element={<AuthPageLayout formType="login" />} />
-              <Route path="/register" element={<AuthPageLayout formType="register" />} />
-              <Route path="/student-dashboard" element={<><Header /><Navbar  /><StudentDashboard /></>} />
-              <Route path="/admin-dashboard" element={<><Header /><Navbar /><AdminDashboard /></>} />
-              <Route path="/registration" element={<><Header /><Navbar /><Registration /></>} />
-              <Route path="/finance" element={<><Header /><Navbar /><Finance /></>} />
-              <Route path="/results" element={<><Header /><Navbar /><Results /></>} />
-              <Route path="/instructors" element={<><Header /><Navbar /><Instructors /></>} />
-              <Route path="*" element={<NotFoundPage />} /> 
-            </Routes>
-          </div>
+          <AppContent />
         </Router>
       </NotificationProvider>
     </AuthProvider>
   );
 }
 
+function AppContent() {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Or a loading spinner component
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Routes>
+        <Route path="/" element={<LandingPageLayout />} />
+        <Route path="/courses" element={<CoursesPageLayout />} />
+        <Route path="/courses/:courseId" element={<CourseVideoPageLayout />} />
+        <Route path="/labs" element={<LabsPageLayout />} />
+        <Route path="/home" element={<HomePageLayout />} />
+        <Route path="/subscription" element={<SubscriptionPageLayout />} />
+        <Route path="/login" element={<AuthPageLayout formType="login" />} />
+        <Route path="/register" element={<AuthPageLayout formType="register" />} />
+        <Route path="/student-dashboard" element={<ProtectedRoute><StudentDashboardPageLayout /></ProtectedRoute>} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboardPageLayout /></ProtectedRoute>} />
+        <Route path="/finance" element={<ProtectedRoute><FinancePageLayout /></ProtectedRoute>} />
+        <Route path="/results" element={<ProtectedRoute><ResultsPageLayout /></ProtectedRoute>} />
+        <Route path="/instructors" element={<ProtectedRoute><InstructorsPageLayout /></ProtectedRoute>} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Or a loading spinner component
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+const LandingPageLayout = () => (
+  <>
+    <Navbar />
+    <LandingPage />
+    <Footer />
+  </>
+);
+
+const CoursesPageLayout = () => (
+  <>
+    <Navbar />
+    <Courses />
+    <Footer />
+  </>
+);
+
+const CourseVideoPageLayout = () => (
+  <>
+    <Navbar />
+    <CourseVideo />
+    <Footer />
+  </>
+);
+
+const LabsPageLayout = () => (
+  <>
+    <Navbar />
+    <Labs />
+    <Footer />
+  </>
+);
+
+const HomePageLayout = () => (
+  <>
+    <Navbar />
+    <Home />
+    <Footer />
+  </>
+);
+
+const SubscriptionPageLayout = () => (
+  <>
+    <Navbar />
+    <Subscription />
+    <Footer />
+  </>
+);
+
 const AuthPageLayout = ({ formType }) => (
   <div className="flex min-h-screen">
     <AuthForm formType={formType} />
   </div>
+);
+
+const StudentDashboardPageLayout = () => (
+  <>
+    <StudentDashboard />
+  </>
+);
+
+const AdminDashboardPageLayout = () => (
+  <>
+    <AdminDashboard />
+  </>
+);
+
+const FinancePageLayout = () => (
+  <>
+    <Finance />
+  </>
+);
+
+const ResultsPageLayout = () => (
+  <>
+    <Results />
+  </>
+);
+
+const InstructorsPageLayout = () => (
+  <>
+    <Instructors />
+  </>
 );
 
 export default App;
