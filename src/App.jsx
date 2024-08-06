@@ -23,51 +23,78 @@ function App() {
     <AuthProvider>
       <NotificationProvider>
         <Router>
-          <AppContent />
+          <AppRoutes />
         </Router>
       </NotificationProvider>
     </AuthProvider>
   );
 }
 
-function AppContent() {
-  const { isLoading } = useAuth();
+function AppRoutes() {
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or a loading spinner component
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="flex flex-col min-h-screen">
       <Routes>
-        <Route path="/" element={<LandingPageLayout />} />
+        <Route path="/" element={isAuthenticated ? <Navigate to="/home" replace /> : <LandingPageLayout />} />
         <Route path="/courses" element={<CoursesPageLayout />} />
         <Route path="/courses/:courseId" element={<CourseVideoPageLayout />} />
         <Route path="/labs" element={<LabsPageLayout />} />
         <Route path="/home" element={<HomePageLayout />} />
         <Route path="/subscription" element={<SubscriptionPageLayout />} />
-        <Route path="/login" element={<AuthPageLayout formType="login" />} />
-        <Route path="/register" element={<AuthPageLayout formType="register" />} />
-        <Route path="/student-dashboard" element={<ProtectedRoute><StudentDashboardPageLayout /></ProtectedRoute>} />
-        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboardPageLayout /></ProtectedRoute>} />
-        <Route path="/finance" element={<ProtectedRoute><FinancePageLayout /></ProtectedRoute>} />
-        <Route path="/results" element={<ProtectedRoute><ResultsPageLayout /></ProtectedRoute>} />
-        <Route path="/instructors" element={<ProtectedRoute><InstructorsPageLayout /></ProtectedRoute>} />
+        <Route path="/login" element={!isAuthenticated ? <AuthPageLayout formType="login" /> : <Navigate to="/home" replace />} />
+        <Route path="/register" element={!isAuthenticated ? <AuthPageLayout formType="register" /> : <Navigate to="/home" replace />} />
+        
+        {/* Protected routes */}
+        <Route path="/student-dashboard" element={
+          <ProtectedRoute>
+            <StudentDashboardPageLayout />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-dashboard" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminDashboardPageLayout />
+          </ProtectedRoute>
+        } />
+        <Route path="/finance" element={
+          <ProtectedRoute requiredRole="admin">
+            <FinancePageLayout />
+          </ProtectedRoute>
+        } />
+        <Route path="/results" element={
+          <ProtectedRoute>
+            <ResultsPageLayout />
+          </ProtectedRoute>
+        } />
+        <Route path="/instructors" element={
+          <ProtectedRoute requiredRole="admin">
+            <InstructorsPageLayout />
+          </ProtectedRoute>
+        } />
+        
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
 }
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or a loading spinner component
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

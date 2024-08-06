@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      console.log('Verifying token...');
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -20,19 +19,24 @@ export const AuthProvider = ({ children }) => {
               'Authorization': `Bearer ${token}`,
             },
           });
+
           if (response.ok) {
             const data = await response.json();
             setIsAuthenticated(true);
             setUser(data.user);
           } else {
-            localStorage.removeItem('token');
+            // Token is invalid or expired
+            await logout();
           }
         } catch (error) {
           console.error('Token verification failed', error);
+          await logout();
         }
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
       setIsLoading(false);
-      console.log('Token verification complete. isAuthenticated:', isAuthenticated);
     };
 
     verifyToken();
@@ -44,10 +48,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', token);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem('token');
+    // Optionally, call the backend to invalidate the token
+    try {
+      await fetch('http://127.0.0.1:5000/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (

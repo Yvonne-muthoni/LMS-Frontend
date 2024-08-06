@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '../../contexts/AuthContext';
-import LoginForm from '../../components/user/LoginForm'; // Adjust the import path as necessary
+import LoginForm from '../../components/user/LoginForm';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -51,9 +51,7 @@ function Login() {
           duration: 5000,
           isClosable: true,
         });
-        navigate(
-          data.user.role === "/admin-dashboard" ? "/admin-dashboard" : "/home"
-        );
+        navigate(data.user.role === 'admin' ? "/admin-dashboard" : "/home");
       } else {
         setError(data.message || 'Login failed. Please try again.');
         toast({
@@ -65,6 +63,7 @@ function Login() {
         });
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('An error occurred. Please try again.');
       toast({
         title: 'Error',
@@ -86,7 +85,7 @@ function Login() {
       setPassword={setPassword}
       handleSubmit={handleSubmit}
       error={error}
-      isLoading={isLoading} // Add this prop to manage loading state in LoginForm
+      isLoading={isLoading}
     />
   );
 }
