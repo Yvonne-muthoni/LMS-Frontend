@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Heading, Spinner, VStack, Text, useToast } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TechStack from '../components/course/TechStack';
-import LearningOutcomes from '../components/course/LearningOutcomes';
+import TechStack from '../../components/course/TechStack';
+import LearningOutcomes from '../../components/course/LearningOutcomes';
 
 const CourseVideo = () => {
   const { courseId } = useParams();

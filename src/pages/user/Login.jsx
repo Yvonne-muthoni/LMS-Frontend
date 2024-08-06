@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
-import { useAuth } from '../contexts/AuthContext';
-import LoginForm from '../components/user/LoginForm'; // Adjust the import path as necessary
+import { useAuth } from '../../contexts/AuthContext';
+import LoginForm from '../../components/user/LoginForm'; // Adjust the import path as necessary
 
 function Login() {
   const [email, setEmail] = useState('');

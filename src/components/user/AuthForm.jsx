@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import WelcomeSection from './WelcomeSection';
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
-import Login from '../../pages/Login';
+import Login from '../../pages/user/Login';
 import Register from './RegistrationForm';
 
 const AuthForm = () => {

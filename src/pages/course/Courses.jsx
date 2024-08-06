@@ -1,7 +1,7 @@
 // pages/Courses.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CoursesList from '../components/course/CoursesList';
+import CoursesList from '../../components/course/CoursesList';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
