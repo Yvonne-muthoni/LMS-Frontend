@@ -66,7 +66,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="/finance" element={
-          <ProtectedRoute requiredRole="admin">
+          <ProtectedRoute>
             <FinancePageLayout />
           </ProtectedRoute>
         } />
@@ -76,7 +76,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="/instructors" element={
-          <ProtectedRoute requiredRole="admin">
+          <ProtectedRoute>
             <InstructorsPageLayout />
           </ProtectedRoute>
         } />
