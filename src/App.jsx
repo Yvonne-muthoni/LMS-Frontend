@@ -17,6 +17,7 @@ import AuthForm from './components/user/AuthForm';
 import Subscription from './pages/subscriptions/Subscription';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function AppRoutes() {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -86,7 +87,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!isAuthenticated) {
