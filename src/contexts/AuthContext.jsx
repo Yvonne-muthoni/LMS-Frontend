@@ -1,7 +1,5 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-// Create and export the AuthContext
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,6 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
+      console.log('Verifying token...');
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -18,7 +17,7 @@ export const AuthProvider = ({ children }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${token}`,
             },
           });
           if (response.ok) {
@@ -33,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         }
       }
       setIsLoading(false);
+      console.log('Token verification complete. isAuthenticated:', isAuthenticated);
     };
 
     verifyToken();
@@ -57,6 +57,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Export AuthContext and a custom hook
 export const useAuth = () => useContext(AuthContext);
-export default AuthContext;

@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../contexts/AuthContext'; // Adjust the path as necessary
 
 // Header Component
-const Header = () => (
+const Header = ({ username, onLogout }) => (
   <header className="bg-white shadow p-4 flex justify-between items-center">
-    <h1 className="text-2xl font-semibold text-gray-900">Welcome back, John!</h1>
+    <h1 className="text-2xl font-semibold text-gray-900">Welcome back, {username}!</h1>
     <div className="flex items-center space-x-4">
       <button className="text-gray-600 hover:text-gray-800">
         <FontAwesomeIcon icon={faBell} className="text-xl" />
@@ -14,7 +15,7 @@ const Header = () => (
       <button className="text-gray-600 hover:text-gray-800">
         <FontAwesomeIcon icon={faUser} className="text-xl" />
       </button>
-      <button className="text-gray-600 hover:text-gray-800">
+      <button className="text-gray-600 hover:text-gray-800" onClick={onLogout}>
         <FontAwesomeIcon icon={faSignOutAlt} className="text-xl" />
       </button>
     </div>
@@ -32,7 +33,6 @@ const Sidebar = () => (
       <Link to="/courses" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Courses</Link>
       <Link to="/registration" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Registration</Link>
       <Link to="/finance" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Finance</Link>
-      {/* <Link to="/drop-semester" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Drop Semester</Link> */}
       <Link to="/results" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Results</Link>
       <Link to="/instructors" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Course Instructors</Link>
     </nav>
@@ -103,19 +103,23 @@ const Schedule = () => (
   </section>
 );
 
-const StudentDashboard = () => (
-  <div className="min-h-screen flex flex-col">
-    <Header />
-    <div className="flex flex-1">
-      <Sidebar />
-      <main className="flex-1 p-6 bg-gray-100 space-y-6">
-        <KeyMetrics />
-        <DailyNotice />
-        <EnrolledCourses />
-        <Schedule />
-      </main>
+const StudentDashboard = () => {
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header username={user?.name} onLogout={logout} />
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 p-6 bg-gray-100 space-y-6">
+          <KeyMetrics />
+          <DailyNotice />
+          <EnrolledCourses />
+          <Schedule />
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default StudentDashboard;
