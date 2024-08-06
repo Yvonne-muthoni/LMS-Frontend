@@ -10,7 +10,7 @@ const Header = ({ notifications, onNotificationClick }) => {
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
     if (onNotificationClick) {
-      onNotificationClick(); // Optional: Clear or update notifications if needed
+      onNotificationClick(); 
     }
   };
 
@@ -55,7 +55,11 @@ const Header = ({ notifications, onNotificationClick }) => {
 const Sidebar = () => (
   <aside className="bg-[#EF4444] text-white w-full md:w-64 space-y-6 py-7 px-2">
     <div>
-      <a href="#" className="text-white text-3xl font-semibold">Logo</a>
+    <img
+        src="https://i.pinimg.com/564x/37/27/bc/3727bc3fe8ef9c43b046207d09494314.jpg"
+        alt=""
+        className="rounded-lg"
+      />
     </div>
     <nav>
       <Link to="/admin-dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Dashboard</Link>
