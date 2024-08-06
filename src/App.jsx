@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Flex, Spinner } from '@chakra-ui/react'; // Import Chakra UI Spinner
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import LandingPage from './pages/landing/LandingPage';
@@ -17,7 +18,6 @@ import AuthForm from './components/user/AuthForm';
 import Subscription from './pages/subscriptions/Subscription';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
-import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
   return (
@@ -32,10 +32,14 @@ function App() {
 }
 
 function AppRoutes() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <Flex align="center" justify="center" minH="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
   }
 
   return (
@@ -87,7 +91,11 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <Flex align="center" justify="center" minH="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
   }
 
   if (!isAuthenticated) {
