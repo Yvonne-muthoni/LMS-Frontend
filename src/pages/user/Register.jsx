@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PasswordStrengthIndicator from "./PasswordStrengthIndicator"; // Ensure this is correctly imported
+import { useToast } from "@chakra-ui/react";
 import RegistrationForm from "../../components/user/RegistrationForm";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordStrength, setPasswordStrength] = useState("Weak");
   const [role, setRole] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  
   const navigate = useNavigate();
+  const toast = useToast();
 
   // Handle password changes and update strength
   const handlePasswordChange = (e) => {
@@ -39,12 +41,26 @@ const Register = () => {
 
       if (response.ok) {
         setSuccess(data.message);
+        toast({
+          title: "Registration Successful",
+          description: data.message || "You have successfully registered.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         navigate("/home");
       } else {
         throw new Error(data.message || "Registration failed");
       }
     } catch (err) {
       setError(err.message || "Registration failed. Please try again.");
+      toast({
+        title: "Registration Failed",
+        description: err.message || "An error occurred during registration.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -58,9 +74,11 @@ const Register = () => {
       setPassword={setPassword}
       role={role}
       setRole={setRole}
-      handleSubmit={handleSubmit}
+      showPassword={showPassword}
+      setShowPassword={setShowPassword}
       error={error}
       success={success}
+      handleSubmit={handleSubmit}
     />
   );
 };

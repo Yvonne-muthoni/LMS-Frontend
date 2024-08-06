@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#FF6247',
         coral: {
           500: "#FF6247",
           700: "#FF4F34",

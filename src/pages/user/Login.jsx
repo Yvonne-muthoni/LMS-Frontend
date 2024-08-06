@@ -18,6 +18,19 @@ function Login() {
     setIsLoading(true);
     setError('');
 
+    if (!email || !password) {
+      setError('Email and password are required.');
+      toast({
+        title: 'Validation Error',
+        description: 'Please fill in both email and password.',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch("http://127.0.0.1:5000/login", {
         method: "POST",
@@ -43,23 +56,38 @@ function Login() {
         );
       } else {
         setError(data.message || 'Login failed. Please try again.');
+        toast({
+          title: 'Login Failed',
+          description: data.message || 'Login failed. Please try again.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred. Please try again later.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-        <LoginForm
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          handleSubmit={handleSubmit}
-          error={error}
-        />
+    <LoginForm
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      handleSubmit={handleSubmit}
+      error={error}
+      isLoading={isLoading} // Add this prop to manage loading state in LoginForm
+    />
   );
 }
 

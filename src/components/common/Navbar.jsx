@@ -94,7 +94,6 @@ function Navbar() {
                   to="/home" 
                   className="text-black font-bold hover:text-coral-500 transition-colors"
                 >
-                  <FontAwesomeIcon className="mr-1" />
                   Home
                 </Link>
               </li>
@@ -104,7 +103,6 @@ function Navbar() {
                 to="/labs" 
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
-                <FontAwesomeIcon className="mr-1" />
                 Labs
               </Link>
             </li>
@@ -113,7 +111,6 @@ function Navbar() {
                 to="/courses" 
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
-                <FontAwesomeIcon className="mr-1" />
                 Courses
               </Link>
             </li>

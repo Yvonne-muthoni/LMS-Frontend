@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoginForm = ({ email, setEmail, password, setPassword, handleSubmit, error }) => {
+const LoginForm = ({ email, setEmail, password, setPassword, handleSubmit, error, isLoading }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -39,9 +39,16 @@ const LoginForm = ({ email, setEmail, password, setPassword, handleSubmit, error
       <div>
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-coral-500 hover:bg-coral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coral-500 transition-colors duration-200"
+          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${
+            isLoading ? 'bg-green-500 text-white cursor-not-allowed' : 'text-white bg-coral-500 hover:bg-coral-700'
+          } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coral-500 transition-colors duration-200`}
+          disabled={isLoading}
         >
-          Sign In
+          {isLoading ? (
+            <span>Signing in...</span>
+          ) : (
+            <span>Sign In</span>
+          )}
         </button>
       </div>
     </form>
