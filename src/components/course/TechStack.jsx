@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, HStack, Tag, Grid, Icon, Image } from '@chakra-ui/react';
+import { Box, Heading, HStack, Tag, Grid, Icon } from '@chakra-ui/react';
 import { FaCode } from 'react-icons/fa';
 
 const TechStack = ({ techStack }) => {
@@ -18,7 +18,6 @@ const TechStack = ({ techStack }) => {
         <Grid templateColumns="repeat(auto-fit, minmax(120px, 1fr))" gap={4}>
           {techStack.map((tech, index) => (
             <Box key={index} textAlign="center">
-              <Image src={tech.icon} alt={tech.name} objectFit="contain" boxSize="48px" />
               <Tag
                 size="lg"
                 variant="solid"
@@ -31,7 +30,7 @@ const TechStack = ({ techStack }) => {
                 color="white"
                 mt={2}
               >
-                {tech.name}
+                {tech}
               </Tag>
             </Box>
           ))}

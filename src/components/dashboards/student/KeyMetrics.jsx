@@ -1,20 +1,20 @@
 import React from 'react';
 
 const KeyMetrics = () => (
-  <section className="bg-white p-6 rounded-lg shadow-md mb-6">
-    <h2 className="text-xl font-semibold mb-4">Payment Info</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div className="bg-blue-100 p-4 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-blue-700">Total Payable</h3>
-        <p className="text-xl font-bold">$10,000</p>
+  <section className="bg-white rounded-lg shadow-md p-8">
+    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Payment Summary</h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="bg-[#FFE8E7] p-6 rounded-lg shadow-md">
+        <h3 className="text-lg font-medium text-[#FF6247] mb-2">Total Payable</h3>
+        <p className="text-3xl font-bold text-[#FF6247]">$10,000</p>
       </div>
-      <div className="bg-green-100 p-4 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-green-700">Total Paid</h3>
-        <p className="text-xl font-bold">$5,000</p>
+      <div className="bg-[#E8FFE8] p-6 rounded-lg shadow-md">
+        <h3 className="text-lg font-medium text-[#4CAF50] mb-2">Total Paid</h3>
+        <p className="text-3xl font-bold text-[#4CAF50]">$5,000</p>
       </div>
-      <div className="bg-yellow-100 p-4 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-yellow-700">Others</h3>
-        <p className="text-xl font-bold">$300</p>
+      <div className="bg-[#FFF7E8] p-6 rounded-lg shadow-md">
+        <h3 className="text-lg font-medium text-[#FFB74D] mb-2">Other Fees</h3>
+        <p className="text-3xl font-bold text-[#FFB74D]">$300</p>
       </div>
     </div>
   </section>

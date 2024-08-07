@@ -8,25 +8,15 @@ import {
   faSignOutAlt,
   faCrown,
   faGraduationCap,
-  faUserShield,
-  faHome, // Added icon for Home
-  faFlask, // Added icon for Labs
-  faBook, // Added icon for Courses
-} from "@fortawesome/free-solid-svg-icons";
+  faUserShield
+} from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../contexts/AuthContext'; // Adjust the import path as necessary
 
 function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const { isAuthenticated, user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      verifyToken(token);
-    }
-  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -41,37 +31,13 @@ function Navbar() {
     };
   }, [dropdownRef]);
 
-  const verifyToken = async (token) => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/verify-token", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setIsAuthenticated(true);
-        setUser(data.user);
-      } else {
-        localStorage.removeItem("token");
-        setIsAuthenticated(false);
-        setUser(null);
-      }
-    } catch (error) {
-      console.error("Error verifying token:", error);
-    }
-  };
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    setUser(null);
-    navigate("/login");
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
 
   return (
@@ -97,8 +63,6 @@ function Navbar() {
                   to="/home"
                   className="text-black font-bold hover:text-coral-500 transition-colors"
                 >
-                  <FontAwesomeIcon icon={faHome} className="mr-1" />{" "}
-                  {/* Added icon */}
                   Home
                 </Link>
               </li>
@@ -108,8 +72,6 @@ function Navbar() {
                 to="/labs"
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
-                <FontAwesomeIcon icon={faFlask} className="mr-1" />{" "}
-                {/* Added icon */}
                 Labs
               </Link>
             </li>
@@ -118,8 +80,6 @@ function Navbar() {
                 to="/courses"
                 className="text-black font-bold hover:text-coral-500 transition-colors"
               >
-                <FontAwesomeIcon icon={faBook} className="mr-1" />{" "}
-                {/* Added icon */}
                 Courses
               </Link>
             </li>
@@ -175,8 +135,8 @@ function Navbar() {
                       <FontAwesomeIcon icon={faCog} className="mr-2 w-4" />
                       Settings
                     </Link>
-                    <button
-                      onClick={logout}
+                    <button 
+                      onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       <FontAwesomeIcon

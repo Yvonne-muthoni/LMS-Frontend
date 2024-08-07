@@ -29,7 +29,7 @@ const CourseAdministration = ({ addActivity }) => {
       <h2 className="text-xl font-semibold mb-4">Course Management</h2>
       <button 
         onClick={() => setShowForm(!showForm)} 
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        className="bg-[#FF6247] text-white px-4 py-2 rounded hover:bg-[#FF3E3E] transition"
       >
         {showForm ? 'Hide Form' : 'Add New Course'}
       </button>
@@ -56,7 +56,7 @@ const CourseAdministration = ({ addActivity }) => {
           </div>
           <button 
             type="submit" 
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            className="bg-[#FF6247] text-white px-4 py-2 rounded hover:bg-[#FF3E3E] transition"
           >
             Submit
           </button>
@@ -73,8 +73,8 @@ const CourseAdministration = ({ addActivity }) => {
                   <p>{course.description}</p>
                 </div>
                 <button 
-                  onClick={() => handleDelete(index)} 
-                  className="text-red-500 hover:underline"
+                  onClick={() => handleDelete(index)}
+                  className="text-red-500 hover:text-red-700"
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
