@@ -9,7 +9,7 @@ function TutorialCards() {
   useEffect(() => {
     const fetchTutorials = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/courses'); 
+        const response = await axios.get('http://127.0.0.1:5001/courses'); 
         setTutorials(response.data);
       } catch (error) {
         console.error('Error fetching tutorials:', error);
@@ -19,7 +19,7 @@ function TutorialCards() {
     fetchTutorials();
   }, []);
 
-  const displayedTutorials = tutorials.slice(13,16);
+  const displayedTutorials = tutorials.slice(0, 3);
 
   return (
     <section className="py-16 bg-[#FF6247]">
@@ -36,7 +36,7 @@ function TutorialCards() {
               key={tutorial.id}
               title={tutorial.title}
               description={tutorial.description}
-              url={tutorial.url}
+              url={tutorial.video}
             />
           ))}
         </div>

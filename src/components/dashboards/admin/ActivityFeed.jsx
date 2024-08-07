@@ -19,7 +19,7 @@ const ActivityFeed = ({ activities }) => {
       {activities.length > 5 && (
         <button 
           onClick={() => setShowAll(!showAll)} 
-          className="text-blue-500 hover:underline"
+          className="text-[#FF6247] hover:underline"
         >
           {showAll ? 'Show less' : 'See all'}
         </button>

@@ -15,8 +15,34 @@ const AuthForm = () => {
     navigate(signUp ? '/register' : '/login');
   };
 
+  const handleBackClick = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
-    <div className="min-h-screen mx-auto flex items-center justify-center">
+    <div className="min-h-screen mx-auto flex items-center justify-center relative">
+      {/* Back Button */}
+      <button
+        onClick={handleBackClick}
+        className="absolute top-4 left-4 p-2 bg-[#FF6247] rounded-full text-white"
+        aria-label="Back"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+
       <div className="max-w-5xl w-full mx-auto flex rounded-lg overflow-hidden">
         {/* WelcomeSection */}
         <WelcomeSection />
