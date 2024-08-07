@@ -8,7 +8,7 @@ function RecommendedSection() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5001/courses'); // Adjust URL based on your backend
+        const response = await fetch('http://127.0.0.1:5000/courses'); // Adjust URL based on your backend
         const data = await response.json();
         setCourses(data);
       } catch (error) {
