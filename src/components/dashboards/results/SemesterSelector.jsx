@@ -1,4 +1,3 @@
-// src/dashboard/SemesterSelector.jsx
 import React from 'react';
 
 const SemesterSelector = ({ semesters, selectedSemester, onSemesterChange }) => {
@@ -7,7 +6,7 @@ const SemesterSelector = ({ semesters, selectedSemester, onSemesterChange }) => 
       <label htmlFor="semester" className="block text-lg font-medium text-gray-700">Select Semester</label>
       <select
         id="semester"
-        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF6247] transition"
         value={selectedSemester}
         onChange={onSemesterChange}
       >

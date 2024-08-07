@@ -1,4 +1,3 @@
-// src/dashboard/Results.jsx
 import React, { useState } from 'react';
 import SemesterSelector from '../../components/dashboards/results/SemesterSelector';
 import SubjectCard from '../../components/dashboards/results/SubjectCard';
@@ -39,22 +38,26 @@ const Results = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <header className="bg-purple-500 text-white p-4 rounded">
-        <h1 className="text-2xl">Results</h1>
-      </header>
-      <section className="mt-4">
-        <h2 className="text-xl font-semibold">View Your Results</h2>
-        <p className="mt-2">Check your exam results, grades, and academic progress here.</p>
-        <SemesterSelector
-          semesters={resultsData}
-          selectedSemester={selectedSemester}
-          onSemesterChange={handleSemesterChange}
-        />
-        <div className="mt-4">
-          {renderResults()}
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <header className="bg-[#FF6247] text-white p-6 rounded-b-lg shadow-md">
+        <div className="container mx-auto">
+          <h1 className="text-3xl font-bold">Results</h1>
         </div>
-      </section>
+      </header>
+      <main className="flex-1 container mx-auto p-6">
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800">View Your Results</h2>
+          <p className="mt-2 text-gray-600">Check your exam results, grades, and academic progress here.</p>
+          <SemesterSelector
+            semesters={resultsData}
+            selectedSemester={selectedSemester}
+            onSemesterChange={handleSemesterChange}
+          />
+          <div className="mt-6">
+            {renderResults()}
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
