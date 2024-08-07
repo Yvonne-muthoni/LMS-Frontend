@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { Flex, Spinner } from "@chakra-ui/react"; // Import Chakra UI Spinner
+import { Flex, Spinner } from "@chakra-ui/react"; 
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import LandingPage from "./pages/landing/LandingPage";
@@ -21,6 +21,7 @@ import StudentDashboard from "./pages/dashboard/StudentDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import AuthForm from "./components/user/AuthForm";
 import Subscription from "./pages/subscriptions/Subscription";
+import Quiz from "./pages/quiz/Quiz";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import ScrollToTop from './components/common/ScrollToTop';
@@ -67,6 +68,7 @@ function AppRoutes() {
         <Route path="/labs" element={<LabsPageLayout />} />
         <Route path="/home" element={<HomePageLayout />} />
         <Route path="/subscription" element={<SubscriptionPageLayout />} />
+        <Route path="/quiz/:category" element={<QuizPageLayout />} /> 
         <Route
           path="/login"
           element={
@@ -239,6 +241,12 @@ const ResultsPageLayout = () => (
 const InstructorsPageLayout = () => (
   <>
     <Instructors />
+  </>
+);
+
+const QuizPageLayout = () => (
+  <>
+    <Quiz />
   </>
 );
 

@@ -32,7 +32,6 @@ function CategoryCard({ name }) {
   };
 
   const handleSignUp = () => {
-    // Implement sign up logic here
     console.log('Sign up clicked');
     setShowModal(false);
   };
