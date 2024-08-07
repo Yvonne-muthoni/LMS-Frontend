@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Spinner, useToast } from '@chakra-ui/react';
 
 function Hero() {
     const [featuredCourse, setFeaturedCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const toast = useToast();
 
     useEffect(() => {
         const fetchFeaturedCourse = async () => {
@@ -12,12 +15,21 @@ function Hero() {
                 setFeaturedCourse(response.data || null);
             } catch (error) {
                 console.error('Error fetching featured course:', error);
+                toast({
+                    title: 'Error',
+                    description: 'There was a problem fetching the featured course.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setFeaturedCourse(null);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchFeaturedCourse();
-    }, []);
+    }, [toast]);
 
     const getYouTubeVideoId = (url) => {
         if (!url) return null;
@@ -57,10 +69,18 @@ function Hero() {
                     </div>
                 </div>
                 <div className='flex items-center justify-center md:h-full'>
-                    <div className='mockup-window bg-[#0F0F0F] border-2 border-slate-100/20 w-full max-w-[1060px] shadow-xl rounded-xl'>
+                    <div className='mockup-window border-2 border-slate-100/20 w-full max-w-[1060px] shadow-xl rounded-xl'>
                         <div className='flex items-center justify-center'>
-                            {featuredCourse ? (
-                                <div className='w-full p-4'>
+                            {loading ? (
+                                <Spinner
+                                    thickness='4px'
+                                    speed='0.65s'
+                                    emptyColor='black'
+                                    size='xl'
+                                    color='white'
+                                />
+                            ) : featuredCourse ? (
+                                <div className='w-full'>
                                     <div className='relative pb-[56.25%] h-0 overflow-hidden rounded-xl'>
                                         <iframe
                                             className='absolute top-0 left-0 w-full h-full rounded-xl'
