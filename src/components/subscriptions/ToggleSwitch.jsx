@@ -1,22 +1,27 @@
-import React from "react";
+import React from 'react';
+import { Switch, FormControl, FormLabel, useColorModeValue } from '@chakra-ui/react';
 
 const ToggleSwitch = ({ isYearly, togglePlan }) => {
+  const switchColor = useColorModeValue('green.500', 'green.300');
+
   return (
-    <div className="flex items-center mb-6">
-      <span className="mr-2 text-sm md:text-base">Monthly</span>
-      <div
-        onClick={togglePlan}
-        className={`cursor-pointer p-1 w-10 h-6 rounded-full flex items-center ${
-          isYearly ? "bg-green-500" : "bg-gray-300"
-        }`}
-      >
-        <div
-          className={`bg-white w-5 h-5 rounded-full shadow-md transform ${
-            isYearly ? "translate-x-4" : ""
-          }`}
-        ></div>
-      </div>
-      <span className="ml-2 text-sm md:text-base">Yearly</span>
+    <div className="flex justify-center">
+      <FormControl display="flex" alignItems="center" textAlign="center">
+        <FormLabel htmlFor="plan-toggle" mb="0" fontSize="lg" mr={4}>
+          Monthly
+        </FormLabel>
+        <Switch
+          id="plan-toggle"
+          isChecked={isYearly}
+          onChange={togglePlan}
+          colorScheme="green"
+          size="lg" // Adjust size here
+          trackColor={switchColor}
+        />
+        <FormLabel htmlFor="plan-toggle" mb="0" fontSize="lg" ml={4}>
+          Yearly
+        </FormLabel>
+      </FormControl>
     </div>
   );
 };

@@ -14,7 +14,7 @@ const Subscription = () => {
         "Just using this for yourself? Lite is the way to go for the lite platform.",
       features: [
         "Unlimited access to PRO courses",
-        "Quizzes with hand-picked meme prizes",
+        "Quizzes with hand-picked prizes",
         "30-day moneyback guarantee",
       ],
     },
@@ -22,7 +22,7 @@ const Subscription = () => {
       name: "Pro",
       price: 19,
       description:
-        "Want to go beyond the basics? Pro offers advanced features for serious users.",
+        "Want to go beyond the basics? Pro offers advanced features for users.",
       features: [
         "All PRO-tier benefits",
         "Invite to private Discord chat",
@@ -36,7 +36,6 @@ const Subscription = () => {
         "Managing a team? Team plan offers bulk pricing and exclusive benefits.",
       features: [
         "Better bulk pricing",
-        "Invite to private Discord chat",
         "All PRO-tier benefits",
         "30-day moneyback guarantee",
       ],
@@ -55,7 +54,7 @@ const Subscription = () => {
     <div className="flex flex-col items-center bg-gray-100 min-h-screen p-6">
       <Header />
       <ToggleSwitch isYearly={isYearly} togglePlan={togglePlan} />
-      <div className="flex flex-col items-center pt-12">
+      <div className="flex flex-col items-center pt-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
           {plans.map((plan) => (
             <PlanCard
