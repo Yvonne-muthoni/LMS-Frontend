@@ -1,24 +1,28 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TestimonialCard from './TestimonialCard';
 
 const TestimonialCards = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const { scrollTop, clientHeight } = document.documentElement;
-      const sectionTop = document.querySelector('.testimonial-section').offsetTop;
-
-      if (scrollTop + clientHeight > sectionTop + 150) {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
         setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
       }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const testimonials = [
@@ -43,7 +47,7 @@ const TestimonialCards = () => {
   };
 
   return (
-    <section className="py-24 testimonial-section bg-gray-100">
+    <section ref={sectionRef} className="py-24 testimonial-section bg-gray-100">
       <div className="container mx-auto px-4">
         <motion.h2
           className="text-5xl font-bold mb-16 text-center text-[#FF6247]"

@@ -10,13 +10,13 @@ function Hero() {
 
     useEffect(() => {
         const fetchFeaturedCourse = async () => {
-            setLoading(true); // Ensure loading is true when fetching starts
+            setLoading(true);
             try {
-                // Simulating a delay to see the skeleton effect
+                // Simulate network delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
-                
+
                 const response = await axios.get('http://localhost:5001/courses');
-                setFeaturedCourse(response.data[0] || null); // Use the first course for demonstration
+                setFeaturedCourse(response.data[0] || null);
             } catch (error) {
                 console.error('Error fetching featured course:', error);
                 toast({
