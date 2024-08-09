@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TutorialCard from './TutorialCard';
@@ -9,7 +8,7 @@ function TutorialCards() {
   useEffect(() => {
     const fetchTutorials = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5001/courses'); 
+        const response = await axios.get('http://localhost:5001/courses');
         setTutorials(response.data);
       } catch (error) {
         console.error('Error fetching tutorials:', error);

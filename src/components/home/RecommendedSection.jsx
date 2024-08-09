@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Skeleton } from '@chakra-ui/react';
 
 
 function RecommendedSection({ courses, searchTerm }) {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Simulate loading time for skeleton effect
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCardClick = (courseId) => {
     navigate(`/courses/${courseId}`);
@@ -20,7 +28,30 @@ function RecommendedSection({ courses, searchTerm }) {
       <h3 className="text-3xl font-semibold mb-10 text-center">
         {searchTerm ? `Search Results for "${searchTerm}"` : "Recommended Courses"}
       </h3>
-      {filteredCourses.length > 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {[...Array(4)].map((_, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+              style={{ width: '100%', maxWidth: '350px' }}
+            >
+              <div className="relative" style={{ paddingTop: '56.25%' }}>
+                <Skeleton height="100%" width="100%" borderRadius="none" />
+              </div>
+              <div className="p-4 flex flex-col">
+                <Skeleton height="20px" width="80%" mb="2" />
+                <Skeleton height="14px" width="100%" mb="4" />
+                <div className="flex flex-wrap gap-2">
+                  {[...Array(3)].map((_, index) => (
+                    <Skeleton key={index} height="24px" width="50px" borderRadius="full" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : filteredCourses.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredCourses.map((course) => (
             <div

@@ -1,23 +1,39 @@
 import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Skeleton, useToast } from '@chakra-ui/react';
 
 function Hero() {
     const [featuredCourse, setFeaturedCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const toast = useToast();
 
     useEffect(() => {
         const fetchFeaturedCourse = async () => {
+            setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/courses/1'); // Fetch the course with id 
-                setFeaturedCourse(response.data || null);
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                const response = await axios.get('http://localhost:5001/courses');
+                setFeaturedCourse(response.data[0] || null);
             } catch (error) {
                 console.error('Error fetching featured course:', error);
+                toast({
+                    title: 'Error',
+                    description: 'There was a problem fetching the featured course.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setFeaturedCourse(null);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchFeaturedCourse();
-    }, []);
+    }, [toast]);
 
     const getYouTubeVideoId = (url) => {
         if (!url) return null;
@@ -57,22 +73,20 @@ function Hero() {
                     </div>
                 </div>
                 <div className='flex items-center justify-center md:h-full'>
-                    <div className='mockup-window bg-[#0F0F0F] border-2 border-slate-100/20 w-full max-w-[1060px] shadow-xl rounded-xl'>
-                        <div className='flex items-center justify-center'>
-                            {featuredCourse ? (
-                                <div className='w-full p-4'>
-                                    <div className='relative pb-[56.25%] h-0 overflow-hidden rounded-xl'>
-                                        <iframe
-                                            className='absolute top-0 left-0 w-full h-full rounded-xl'
-                                            src={`https://www.youtube.com/embed/${getYouTubeVideoId(featuredCourse.video)}`}
-                                            allow='accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                                            frameBorder='0'
-                                            title='YouTube video'
-                                        ></iframe>
-                                    </div>
-                                </div>
+                    <div className='mockup-window border-2 border-slate-100/20 w-full max-w-[1060px] shadow-xl rounded-xl'>
+                        <div className='relative pb-[56.25%] w-full h-0 overflow-hidden rounded-xl'>
+                            {loading ? (
+                                <Skeleton height="100%" width="100%" borderRadius="xl" position="absolute" top="0" left="0" />
+                            ) : featuredCourse ? (
+                                <iframe
+                                    className='absolute top-0 left-0 w-full h-full rounded-xl'
+                                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(featuredCourse.video)}`}
+                                    allow='accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                                    frameBorder='0'
+                                    title='YouTube video'
+                                ></iframe>
                             ) : (
-                                <p className='text-white'>No featured course available.</p>
+                                <p className='absolute top-0 left-0 w-full h-full flex items-center justify-center text-white'>No featured course available.</p>
                             )}
                         </div>
                     </div>
