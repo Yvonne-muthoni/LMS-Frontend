@@ -5,7 +5,7 @@ import KeyMetrics from '../../components/dashboards/student/KeyMetrics';
 import DailyNotice from '../../components/dashboards/student/DailyNotice';
 import EnrolledCourses from '../../components/dashboards/student/EnrolledCourses';
 import Schedule from '../../components/dashboards/student/Schedule';
-import { useAuth } from '../../contexts/AuthContext'; // Adjust the path as necessary
+import { useAuth } from '../../contexts/AuthContext'; 
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();
