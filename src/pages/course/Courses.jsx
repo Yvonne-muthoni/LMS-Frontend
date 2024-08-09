@@ -1,6 +1,7 @@
 // pages/Courses.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Spinner, Box, Center, Text } from '@chakra-ui/react';
 import CoursesList from '../../components/course/CoursesList';
 
 const Courses = () => {
@@ -25,25 +26,33 @@ const Courses = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center mt-8">Loading courses...</div>;
+    return (
+      <Center minH="100vh">
+        <Spinner size="xl" />
+      </Center>
+    );
   }
 
   if (error) {
-    return <div className="text-center mt-8 text-red-500">{error}</div>;
+    return (
+      <Center minH="100vh">
+        <Text color="red.500">{error}</Text>
+      </Center>
+    );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl font-extrabold text-gray-900 text-center mb-4">
+    <Box bg="gray.50" minH="100vh" py={16} px={4} sm={{ px: 6 }} lg={{ px: 8 }}>
+      <Box maxW="7xl" mx="auto">
+        <Text fontSize="5xl" fontWeight="extrabold" color="gray.900" textAlign="center" mb={4}>
           Courses
-        </h1>
-        <p className="text-gray-600 text-center mb-16 text-lg font-medium">
+        </Text>
+        <Text color="gray.600" textAlign="center" mb={16} fontSize="lg" fontWeight="medium">
           Challenging multi-step experiences with quizzes and progress-tracking
-        </p>
+        </Text>
         <CoursesList courses={courses} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

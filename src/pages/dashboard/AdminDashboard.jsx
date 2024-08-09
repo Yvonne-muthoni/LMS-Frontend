@@ -7,62 +7,33 @@ import UserAdministration from '../../components/dashboards/admin/UserAdministra
 import CourseAdministration from '../../components/dashboards/admin/CourseAdministration';
 
 const AdminDashboard = () => {
-  const [notifications, setNotifications] = useState([
-    'New user registered.',
-    'Course "React Basics" updated.',
-    'System maintenance scheduled.',
-  ]);
+  const [notifications, setNotifications] = useState([]);
   const [activities, setActivities] = useState([
-    'User JohnDoe registered.',
-    'Course "Advanced JavaScript" updated.',
-    'User JaneDoe profile updated.',
-    'New course "CSS Flexbox" added.',
-    'User AlexSmith deleted.',
-    'System update applied.',
+    "User John Doe signed in",
+    "New course 'React for Beginners' added",
+    "User Jane Smith signed up"
   ]);
-
-  const [notificationText, setNotificationText] = useState('');
 
   const addActivity = (activity) => {
     setActivities([activity, ...activities]);
   };
 
-  const handleNotificationSubmit = (e) => {
-    e.preventDefault();
-    setNotifications([notificationText, ...notifications]);
-    setNotificationText('');
+  const handleNotificationClick = () => {
+    setNotifications([]);
   };
 
   return (
-    <div className="flex">
-      <NavigationSidebar />
-      <main className="flex-1 p-6">
-        <TopBar notifications={notifications} />
-        <DashboardMetrics />
-        <ActivityFeed activities={activities} />
-        <UserAdministration addActivity={addActivity} />
-        <CourseAdministration addActivity={addActivity} />
-        <section className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Add New Notification</h2>
-          <form onSubmit={handleNotificationSubmit} className="space-y-4">
-            <div>
-              <label className="block text-gray-700">Notification Text</label>
-              <textarea 
-                className="w-full border border-gray-300 p-2 rounded" 
-                placeholder="Enter notification text" 
-                value={notificationText} 
-                onChange={(e) => setNotificationText(e.target.value)}
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-            >
-              Submit
-            </button>
-          </form>
-        </section>
-      </main>
+    <div className="min-h-screen flex flex-col">
+      <TopBar notifications={notifications} onNotificationClick={handleNotificationClick} />
+      <div className="flex flex-grow">
+        <NavigationSidebar />
+        <div className="flex-grow p-6 bg-gray-100">
+          <DashboardMetrics />
+          <ActivityFeed activities={activities} />
+          <UserAdministration addActivity={addActivity} />
+          <CourseAdministration addActivity={addActivity} />
+        </div>
+      </div>
     </div>
   );
 };

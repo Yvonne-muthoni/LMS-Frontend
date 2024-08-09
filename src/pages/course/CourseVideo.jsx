@@ -74,7 +74,7 @@ const CourseVideo = () => {
   return (
     <Box maxWidth="8xl" margin="auto" padding={6}>
       <Button 
-        color="#FF6247" // Custom color for the button text
+        color="#FF6247" 
         variant="link" 
         marginBottom={6} 
         fontSize="lg" 
@@ -117,7 +117,9 @@ const CourseVideo = () => {
 
       <VStack spacing={8} align="stretch">
         <TechStack techStack={courseData.techStack} />
-        <LearningOutcomes outcomes={courseData.whatYouWillLearn} />
+        <LearningOutcomes 
+          outcomes={courseData.whatYouWillLearn.map(text => ({ text }))} 
+        />
       </VStack>
     </Box>
   );

@@ -8,6 +8,7 @@ import {
   Button,
   Select,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
@@ -23,7 +24,10 @@ const RegistrationForm = () => {
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+  const toast = useToast();
 
   // Handle password changes and update strength
   const handlePasswordChange = (e) => {
@@ -51,20 +55,32 @@ const RegistrationForm = () => {
 
       if (response.ok) {
         setSuccess(data.message);
-        navigate("/home");
+        toast({
+          title: "Registration Successful",
+          description: data.message || "You have successfully registered.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate("/login");
       } else {
         throw new Error(data.message || "Registration failed");
       }
     } catch (err) {
       setError(err.message || "Registration failed. Please try again.");
+      toast({
+        title: "Registration Failed",
+        description: err.message || "An error occurred during registration.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <FormControl isRequired>
+      <FormControl isRequired isInvalid={!!error}>
         <FormLabel htmlFor="username">Username</FormLabel>
         <Input
           id="username"
@@ -79,7 +95,7 @@ const RegistrationForm = () => {
           }}
         />
       </FormControl>
-      <FormControl isRequired>
+      <FormControl isRequired isInvalid={!!error}>
         <FormLabel htmlFor="email">Email Address</FormLabel>
         <Input
           id="email"
@@ -94,7 +110,7 @@ const RegistrationForm = () => {
           }}
         />
       </FormControl>
-      <FormControl isRequired>
+      <FormControl isRequired isInvalid={!!error}>
         <FormLabel htmlFor="password">Password</FormLabel>
         <InputGroup>
           <Input
@@ -126,7 +142,7 @@ const RegistrationForm = () => {
         </InputGroup>
         <PasswordStrengthIndicator password={password} />
       </FormControl>
-      <FormControl isRequired>
+      <FormControl isRequired isInvalid={!!error}>
         <FormLabel htmlFor="role">Role</FormLabel>
         <Select
           id="role"

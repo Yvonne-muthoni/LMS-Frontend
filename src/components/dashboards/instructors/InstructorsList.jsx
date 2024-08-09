@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserIcon } from '@heroicons/react/24/solid'; // Import Heroicons
 
 const InstructorsList = () => {
   const instructors = [
@@ -9,15 +10,18 @@ const InstructorsList = () => {
   ];
 
   return (
-    <ul className="list-disc pl-5 mt-2">
+    <ul className="space-y-4 mt-4">
       {instructors.map((instructor, index) => (
-        <li key={index}>
-          <h3 className="font-semibold">{instructor.name}</h3>
-          <p>{instructor.description}</p>
+        <li key={index} className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex items-center">
+          <UserIcon className="h-8 w-8 text-[#FF6247] mr-4" />
+          <div>
+            <h3 className="text-lg font-semibold text-[#FF6247]">{instructor.name}</h3>
+            <p className="text-gray-700">{instructor.description}</p>
+          </div>
         </li>
       ))}
     </ul>
   );
 };
 
-export default InstructorsList
+export default InstructorsList;
