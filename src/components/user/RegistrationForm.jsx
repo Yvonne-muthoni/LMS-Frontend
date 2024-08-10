@@ -156,7 +156,6 @@ const RegistrationForm = () => {
         >
           <option value="">Select your role</option>
           <option value="student">Student</option>
-          <option value="admin">Admin</option>
         </Select>
       </FormControl>
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
