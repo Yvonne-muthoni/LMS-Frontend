@@ -14,7 +14,7 @@ const TopBar = ({ notifications, onNotificationClick }) => {
 
   return (
     <header className="bg-white shadow p-4 flex justify-between items-center w-full">
-      <h1 className="text-2xl font-bold text-gray-900">Welcome back, Admin!</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Admin's Management Dashboard</h1>
       <div className="flex items-center space-x-4">
         <div className="relative">
           <button 

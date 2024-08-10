@@ -15,7 +15,7 @@ function Hero() {
                 // Simulate network delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
-                const response = await axios.get('http://localhost:5001/courses');
+                const response = await axios.get('http://localhost:5000/courses');
                 setFeaturedCourse(response.data[0] || null);
             } catch (error) {
                 console.error('Error fetching featured course:', error);
