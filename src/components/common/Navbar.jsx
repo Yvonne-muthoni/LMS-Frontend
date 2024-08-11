@@ -104,7 +104,7 @@ function Navbar() {
                       />
                       Profile
                     </Link>
-                    {user && user.role === "user" && (
+                    {user && user.role === "student" && (
                       <Link
                         to="/student-dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -128,13 +128,6 @@ function Navbar() {
                         Admin Dashboard
                       </Link>
                     )}
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <FontAwesomeIcon icon={faCog} className="mr-2 w-4" />
-                      Settings
-                    </Link>
                     <button 
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
