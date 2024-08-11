@@ -9,7 +9,8 @@ const InstructorsList = () => {
     { name: 'Eng Victor', description: 'Full-stack Developer focused on frontend, creating dynamic interfaces and seamless user experiences.' },
     { name: 'Eng Yvone', description: 'Frontend Developer specializing in crafting user-friendly interfaces and enhancing user experiences through innovative design.' },
     { name: 'Eng Najib', description: 'UX/UI Designer focused on improving user interaction through thoughtful design and usability principles.' },
-  ]
+  ];
+
   return (
     <ul className="space-y-4 mt-4">
       {instructors.map((instructor, index) => (
