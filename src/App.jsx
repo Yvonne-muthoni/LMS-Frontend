@@ -25,6 +25,7 @@ import Quiz from "./pages/quiz/Quiz";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import ScrollToTop from './components/common/ScrollToTop';
+import SubscriptionForm from "./components/subscriptions/SubscriptionForm";
 
 function App() {
   return (
@@ -68,7 +69,8 @@ function AppRoutes() {
         <Route path="/labs" element={<LabsPageLayout />} />
         <Route path="/home" element={<HomePageLayout />} />
         <Route path="/subscription" element={<SubscriptionPageLayout />} />
-        <Route path="/quiz/:category" element={<QuizPageLayout />} /> 
+        <Route path="/subscribe" element={<SubscriptionForm />} />
+        <Route path="/quiz/:category" element={<QuizPageLayout />} />
         <Route
           path="/login"
           element={
