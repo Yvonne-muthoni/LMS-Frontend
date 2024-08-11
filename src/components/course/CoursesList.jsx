@@ -62,14 +62,12 @@ const CoursesList = ({ courses }) => {
             try {
               await login();
               setIsModalOpen(false);
-              // Handle post-login action, such as navigating to a course
             } catch (err) {
               console.error('Login failed', err);
             }
           }}
           onSignUp={() => {
             setIsModalOpen(false);
-            // Navigate to sign-up page or handle sign-up logic
           }}
         />
       )}
@@ -82,7 +80,7 @@ const CoursesList = ({ courses }) => {
             description={course.description}
             image={course.image}
             tags={course.techStack}
-            onClick={handleCourseCardClick}  // Add onClick handler if needed
+            onClick={handleCourseCardClick} 
           />
         ))}
       </Grid>

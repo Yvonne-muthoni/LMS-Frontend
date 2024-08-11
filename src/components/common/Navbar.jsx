@@ -10,7 +10,7 @@ import {
   faGraduationCap,
   faUserShield
 } from '@fortawesome/free-solid-svg-icons';
-import { useAuth } from '../../contexts/AuthContext'; // Adjust the import path as necessary
+import { useAuth } from '../../contexts/AuthContext';
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -94,16 +94,6 @@ function Navbar() {
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-52 bg-white rounded-md shadow-lg py-1 z-10">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <FontAwesomeIcon
-                        icon={faUserCircle}
-                        className="mr-2 w-4"
-                      />
-                      Profile
-                    </Link>
                     {user && user.role === "student" && (
                       <Link
                         to="/student-dashboard"

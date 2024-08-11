@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserIcon } from '@heroicons/react/24/solid'; // Import Heroicons
+import { UserIcon } from '@heroicons/react/24/solid'; 
 
 const InstructorsList = () => {
   const instructors = [

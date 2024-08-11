@@ -1,4 +1,3 @@
-// src/dashboard/SubscriptionPlans.jsx
 import React from 'react';
 
 const SubscriptionPlans = () => {

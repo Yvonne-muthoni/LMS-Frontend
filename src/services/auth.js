@@ -1,4 +1,3 @@
-// Authentication service
 import api from './api';
 
 export const login = async (credentials) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from '../labs/SearchBar'; // Adjust the import path as necessary
+import SearchBar from '../labs/SearchBar';
 
 function HeroSection({ searchTerm, setSearchTerm, handleSearch }) {
   return (

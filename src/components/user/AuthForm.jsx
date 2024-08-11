@@ -16,7 +16,7 @@ const AuthForm = () => {
   };
 
   const handleBackClick = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1); 
   };
 
   return (
@@ -44,10 +44,10 @@ const AuthForm = () => {
       </button>
 
       <div className="max-w-5xl w-full mx-auto flex rounded-lg overflow-hidden">
-        {/* WelcomeSection */}
+   
         <WelcomeSection />
 
-        {/* Auth Form */}
+     
         <div className="w-full md:w-1/2 p-12 flex flex-col justify-center bg-white">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
