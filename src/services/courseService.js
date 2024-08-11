@@ -1,4 +1,3 @@
-// Course service to handle course-related requests
 import api from './api';
 
 export const getCourses = async () => {

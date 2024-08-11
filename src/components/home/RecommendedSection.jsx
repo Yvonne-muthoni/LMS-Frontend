@@ -14,7 +14,7 @@ function RecommendedSection({ searchTerm }) {
       try {
         // Fetch data from the API
         const response = await axios.get("http://localhost:5000/courses");
-        setCourses(response.data.courses); // Assuming the response data structure
+        setCourses(response.data.courses); 
         setLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error);

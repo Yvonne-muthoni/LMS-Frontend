@@ -29,11 +29,11 @@ const RegistrationForm = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // Handle password changes and update strength
+
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    // Example logic for password strength; adjust as needed
+ 
     setPasswordStrength(newPassword.length > 8 ? "Strong" : "Weak");
   };
 
@@ -118,7 +118,7 @@ const RegistrationForm = () => {
             name="password"
             type={showPassword ? "text" : "password"}
             value={password}
-            onChange={handlePasswordChange} // Update to use the new handlePasswordChange function
+            onChange={handlePasswordChange} 
             placeholder="Enter your password"
             _focus={{
               borderColor: colorScheme,

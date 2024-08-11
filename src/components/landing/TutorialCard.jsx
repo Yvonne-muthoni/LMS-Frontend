@@ -15,12 +15,10 @@ function TutorialCard({ title, description, url, tags }) {
   const videoId = getYouTubeVideoId(url);
 
   useEffect(() => {
-    // Simulate loading time to display the skeleton
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Limit tags to the first 3
   const limitedTags = tags ? tags.slice(0, 2) : [];
 
   return (

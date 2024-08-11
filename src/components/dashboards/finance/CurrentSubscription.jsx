@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CurrentSubscription = () => {
-  // Example data, replace with actual data fetching logic
   const currentPlan = {
     name: 'Standard Plan',
     expiry: '2024-12-31',

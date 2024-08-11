@@ -1,4 +1,3 @@
-// API service to handle network requests
 import axios from 'axios';
 
 const api = axios.create({

@@ -27,7 +27,7 @@ const TutorialCards = () => {
     fetchTutorials();
   }, []);
 
-  // Limit the displayed tutorials to the first 3
+ 
   const displayedTutorials = tutorials.slice(0, 3);
 
   return (
@@ -48,7 +48,7 @@ const TutorialCards = () => {
                 title={tutorial.title}
                 description={tutorial.description}
                 url={tutorial.video}
-                techStack={tutorial.tech_stack} // Pass tech stack
+                techStack={tutorial.tech_stack} 
               />
             ))
           ) : (

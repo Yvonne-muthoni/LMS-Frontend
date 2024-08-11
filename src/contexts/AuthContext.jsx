@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             setUser(data.user);
           } else {
-            // Token is invalid or expired
+     
             await logout();
           }
         } catch (error) {
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem('token');
-    // Optionally, call the backend to invalidate the token
+  
     try {
       await fetch('http://127.0.0.1:5000/logout', {
         method: 'POST',

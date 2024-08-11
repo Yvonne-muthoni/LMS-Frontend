@@ -7,11 +7,10 @@ const DashboardMetrics = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the number of active courses
     const fetchActiveCourses = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:5000/courses/count");
-        setActiveCourses(response.data.count); // Adjust according to the response format
+        setActiveCourses(response.data.count);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching active courses:", error);
