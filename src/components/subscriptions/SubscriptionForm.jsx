@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SubscriptionForm = () => {
   const location = useLocation();
+  const navigate = useNavigate(); 
   const { plan, isYearly, calculatePrice } = location.state || {};
+  const { user, authToken } = useAuth();
+  const toast = useToast();
 
   const getPrice = (price) =>
     typeof calculatePrice === "function" ? calculatePrice(price) : price;
@@ -13,22 +18,77 @@ const SubscriptionForm = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError("");
 
-    setTimeout(() => {
-      if (!amount || !phoneNumber) {
-        setError("Please fill in all fields.");
-      } else {
-        setError("");
-        alert(
-          `Subscription successful with amount: ${amount} and phone number: ${phoneNumber}`
-        );
-      }
-      setIsLoading(false);
-    }, 1000);
-  };
+  if (!amount || !phoneNumber) {
+    setError("Please fill in all fields.");
+    toast({
+      title: "Validation Error",
+      description: "Please fill in all fields.",
+      status: "warning",
+      duration: 5000,
+      isClosable: true,
+    });
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`, 
+      },
+      body: JSON.stringify({
+        user_id: user?.id,
+        amount: Number(amount),
+        phone_number: phoneNumber,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast({
+        title: "Subscription successful.",
+        description: `Subscription successful with amount: ${amount} and phone number: ${phoneNumber}`,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      setTimeout(() => {
+        navigate("/courses");
+      }, 10000); 
+    } else {
+      setError(data.message || "Subscription failed. Please try again.");
+      toast({
+        title: "Subscription Failed",
+        description: data.message || "Subscription failed. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  } catch (err) {
+    console.error("Subscription error:", err);
+    setError("An error occurred. Please try again.");
+    toast({
+      title: "Error",
+      description: "An unexpected error occurred. Please try again later.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
