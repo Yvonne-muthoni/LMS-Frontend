@@ -18,7 +18,7 @@ const NavigationSidebar = () => (
         <FaHome className="mr-3" /> Home
       </Link>
       <Link
-        to="/course-management"
+        to="/courses"
         className="flex items-center py-2.5 px-4 rounded transition duration-200 hover:bg-[#FF3E3E]"
       >
         <FaBook className="mr-3" /> Course Management
