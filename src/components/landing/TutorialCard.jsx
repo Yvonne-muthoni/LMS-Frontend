@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Skeleton } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import { Skeleton } from "@chakra-ui/react";
 
 function TutorialCard({ title, description, url, tags }) {
   const [loading, setLoading] = useState(true);
 
   const getYouTubeVideoId = (url) => {
     if (!url) return null;
-    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const regex =
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
   };
@@ -14,13 +15,11 @@ function TutorialCard({ title, description, url, tags }) {
   const videoId = getYouTubeVideoId(url);
 
   useEffect(() => {
-    // Simulate loading time to display the skeleton
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Limit tags to the first 3
-  const limitedTags = tags ? tags.slice(0, 3) : [];
+  const limitedTags = tags ? tags.slice(0, 2) : [];
 
   return (
     <div className="block bg-white rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-2xl hover:scale-105">
@@ -59,7 +58,9 @@ function TutorialCard({ title, description, url, tags }) {
             )}
           </div>
           <div className="p-6">
-            <h3 className="text-xl font-semibold text-[#FF6247] mb-2">{title}</h3>
+            <h3 className="text-xl font-semibold text-[#FF6247] mb-2">
+              {title}
+            </h3>
             <p className="text-gray-700 mb-4">{description}</p>
             {limitedTags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">

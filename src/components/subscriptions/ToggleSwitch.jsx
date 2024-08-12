@@ -15,7 +15,7 @@ const ToggleSwitch = ({ isYearly, togglePlan }) => {
           isChecked={isYearly}
           onChange={togglePlan}
           colorScheme="green"
-          size="lg" // Adjust size here
+          size="lg" 
           trackColor={switchColor}
         />
         <FormLabel htmlFor="plan-toggle" mb="0" fontSize="lg" ml={4}>

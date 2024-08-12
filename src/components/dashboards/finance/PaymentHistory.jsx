@@ -1,7 +1,6 @@
 import React from 'react';
 
 const PaymentHistory = () => {
-  // Example data, replace with actual data fetching logic
   const payments = [
     { date: '2024-08-01', amount: '$20', description: 'Standard Plan - Monthly Renewal' },
     { date: '2024-07-01', amount: '$20', description: 'Standard Plan - Monthly Renewal' },

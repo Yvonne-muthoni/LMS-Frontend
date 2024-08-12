@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../../components/dashboards/student/Header'; // Correct path
-import Sidebar from '../../components/dashboards/student/Sidebar'; // Corrected path
-import KeyMetrics from '../../components/dashboards/student/KeyMetrics'; // Correct path
-import DailyNotice from '../../components/dashboards/student/DailyNotice'; // Correct path
-import EnrolledCourses from '../../components/dashboards/student/EnrolledCourses'; // Correct path
-import Schedule from '../../components/dashboards/student/Schedule'; // Correct path
-import { useAuth } from '../../contexts/AuthContext'; // Path remains the same
+import Header from '../../components/dashboards/student/Header'; 
+import Sidebar from '../../components/dashboards/student/Sidebar';
+import KeyMetrics from '../../components/dashboards/student/KeyMetrics'; 
+import DailyNotice from '../../components/dashboards/student/DailyNotice'; 
+import EnrolledCourses from '../../components/dashboards/student/EnrolledCourses'; 
+import Schedule from '../../components/dashboards/student/Schedule';
+import { useAuth } from '../../contexts/AuthContext'; 
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();

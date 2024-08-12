@@ -4,7 +4,6 @@ import PaymentHistory from '../../components/dashboards/finance/PaymentHistory';
 import PlanCard from '../../components/subscriptions/PlanCard';
 
 const Finance = () => {
-  // Sample data to pass to PlanCard
   const plans = [
     {
       name: "Lite",
@@ -42,7 +41,7 @@ const Finance = () => {
     },
   ];
 
-  const isYearly = false; // Adjust this based on your logic
+  const isYearly = false; 
   const calculatePrice = (price) => (isYearly ? price * 12 : price);
 
   return (
