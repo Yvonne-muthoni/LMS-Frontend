@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const DashboardMetrics = () => {
   const [activeCourses, setActiveCourses] = useState(0);
@@ -7,16 +7,15 @@ const DashboardMetrics = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Fetch the number of active courses
     const fetchActiveCourses = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/courses/count");
-        setActiveCourses(response.data.count);
+        const response = await axios.get('http://127.0.0.1:5000/courses/count');
+        setActiveCourses(response.data.count); // Adjust according to the response format
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching active courses:", error);
-        setError(
-          "An error occurred while fetching the number of active courses."
-        );
+        console.error('Error fetching active courses:', error);
+        setError('An error occurred while fetching the number of active courses.');
         setLoading(false);
       }
     };

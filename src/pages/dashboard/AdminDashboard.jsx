@@ -9,9 +9,9 @@ import CourseAdministration from '../../components/dashboards/admin/CourseAdmini
 const AdminDashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [activities, setActivities] = useState([
-    "User John Doe signed in",
-    "New course 'React for Beginners' added",
-    "User Jane Smith signed up"
+    // "User John Doe signed in",
+    // "New course 'React for Beginners' added",
+    // "User Jane Smith signed up"
   ]);
 
   const addActivity = (activity) => {

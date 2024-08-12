@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { Skeleton, useToast } from "@chakra-ui/react";
+import  { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Skeleton, useToast } from '@chakra-ui/react';
 
 function Hero() {
   const [featuredCourse, setFeaturedCourse] = useState(null);
@@ -15,27 +15,22 @@ function Hero() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const response = await axios.get("http://localhost:5000/courses");
-        if (response.status === 200) {
-          const courses = response.data.courses; 
-          setFeaturedCourse(courses[0] || null);
-        } else {
-          throw new Error("Failed to fetch courses");
-        }
-      } catch (error) {
-        console.error("Error fetching featured course:", error);
-        toast({
-          title: "Error",
-          description: `There was a problem fetching the featured course: ${error.message}`,
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-        setError("Failed to fetch featured course");
-      } finally {
-        setLoading(false);
-      }
-    };
+                const response = await axios.get('http://localhost:5000/courses');
+                setFeaturedCourse(response.data[0] || null);
+            } catch (error) {
+                console.error('Error fetching featured course:', error);
+                toast({
+                    title: 'Error',
+                    description: 'There was a problem fetching the featured course.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+                setFeaturedCourse(null);
+            } finally {
+                setLoading(false);
+            }
+        };
 
     fetchFeaturedCourse();
   }, [toast]);
