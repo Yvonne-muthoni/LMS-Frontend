@@ -3,129 +3,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-const CourseCard = ({
-  id,
-  title,
-  description,
-  image,
-  tags,
-  techStack,
-  onDelete,
-  index,
-}) => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleClick = () => {
-    navigate(`/courses/${id}`);
-  };
-
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    try {
-      await axios.delete(`http://127.0.0.1:5000/courses/${id}`);
-      onDelete(id);
-    } catch (error) {
-      console.error("Error deleting course:", error);
-    }
-  };
-
-  const displayTags = tags?.slice(0, 3) || [];
-  const displayTechStack = techStack?.slice(0, 3) || [];
-
-  return (
-    <Draggable draggableId={id.toString()} index={index}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-2xl border border-gray-200 flex flex-col cursor-pointer relative"
-          style={{ height: "450px", width: "300px" }}
-          onClick={handleClick}
-        >
-          {loading ? (
-            <div className="relative h-[45%] w-full bg-gray-200 animate-pulse" />
-          ) : (
-            <div className="relative h-[45%] w-full">
-              <img
-                src={image || "/default-thumbnail.jpg"}
-                alt={`${title} thumbnail`}
-                className="absolute inset-0 w-full h-full object-cover rounded-t-2xl"
-              />
-            </div>
-          )}
-
-          <div className="p-6 flex flex-col flex-grow">
-            {loading ? (
-              <>
-                <div
-                  className="h-5 bg-gray-200 rounded mb-2 animate-pulse"
-                  style={{ width: "80%" }}
-                />
-                <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse" />
-                <div className="flex mt-2 space-x-2">
-                  <div className="h-6 w-12 bg-gray-200 rounded-full animate-pulse" />
-                  <div className="h-6 w-12 bg-gray-200 rounded-full animate-pulse" />
-                  <div className="h-6 w-12 bg-gray-200 rounded-full animate-pulse" />
-                </div>
-              </>
-            ) : (
-              <>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate">
-                  {title}
-                </h3>
-                <p className="text-gray-700 text-sm flex-grow overflow-hidden">
-                  {description}
-                </p>
-                {displayTags.length > 0 && (
-                  <div className="mt-2 flex flex-wrap">
-                    {displayTags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="inline-block bg-coral-500 text-white text-xs px-2 py-1 rounded-full mr-2 mb-2"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {displayTechStack.length > 0 && (
-                  <div className="mt-2 flex flex-wrap">
-                    {displayTechStack.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="inline-block text-white bg-[#FF6247] text-xs px-2 py-1 rounded-full mr-2 mb-2"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <button
-                  onClick={handleDelete}
-                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-                >
-                  Delete Course
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </Draggable>
-  );
-};
-
-const CourseAdministration = ({ addActivity }) => {
+const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
+
+  const handleClick = (id) => {
+    navigate(`/courses/${id}`);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -145,9 +32,45 @@ const CourseAdministration = ({ addActivity }) => {
     fetchCourses();
   }, []);
 
-  const handleDeleteCourse = (id) => {
-    setCourses(courses.filter((course) => course.id !== id));
-    addActivity(`Course with ID "${id}" was deleted.`);
+  const notifyActivity = (message) => {
+    setNotifications((prev) => [...prev, message]);
+    setTimeout(() => {
+      setNotifications((prev) => prev.slice(1));
+    }, 3000); 
+  };
+
+  const handleDeleteCourse = async (id) => {
+    try {
+      await axios.delete(`http://127.0.0.1:5000/courses/${id}`);
+      setCourses(courses.filter((course) => course.id !== id));
+      notifyActivity(`Course with ID "${id}" was deleted.`);
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
+  };
+
+  const handleArchiveCourse = async (id) => {
+    try {
+      await axios.put(`http://127.0.0.1:5000/courses/${id}/archive`);
+      setCourses(courses.map(course =>
+        course.id === id ? { ...course, isArchived: true } : course
+      ));
+      notifyActivity(`Course with ID "${id}" was archived.`);
+    } catch (error) {
+      console.error("Error archiving course:", error);
+    }
+  };
+
+  const handleUnarchiveCourse = async (id) => {
+    try {
+      await axios.put(`http://127.0.0.1:5000/courses/${id}/unarchive`);
+      setCourses(courses.map(course =>
+        course.id === id ? { ...course, isArchived: false } : course
+      ));
+      notifyActivity(`Course with ID "${id}" was unarchived.`);
+    } catch (error) {
+      console.error("Error unarchiving course:", error);
+    }
   };
 
   const handleOnDragEnd = (result) => {
@@ -174,10 +97,18 @@ const CourseAdministration = ({ addActivity }) => {
         Admin Course Management System
       </h2>
       <h1>
-        View Course: Browse through the list of courses & DELETE SPECIFIC
-        COURSE.
+        View Course: Browse through the list of courses & DELETE, ARCHIVE, or UNARCHIVE a specific course.
       </h1>
-      <h1>Click to check: Completed courses (By Students).</h1>
+
+      {/* Notifications */}
+      <div className="mb-4">
+        {notifications.map((notification, index) => (
+          <div key={index} className="bg-green-600 text-white px-4 py-2 rounded mb-2">
+            {notification}
+          </div>
+        ))}
+      </div>
+
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="courses">
           {(provided) => (
@@ -187,17 +118,98 @@ const CourseAdministration = ({ addActivity }) => {
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4"
             >
               {courses.map((course, index) => (
-                <CourseCard
-                  key={course.id}
-                  id={course.id}
-                  title={course.name || course.title}
-                  description={course.description}
-                  image={course.image}
-                  tags={course.tags}
-                  techStack={course.techStack}
-                  onDelete={handleDeleteCourse}
-                  index={index}
-                />
+                <Draggable draggableId={course.id.toString()} index={index} key={course.id}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      onClick={() => handleClick(course.id)} 
+                      className={`bg-white rounded-2xl overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-2xl border border-gray-200 flex flex-col cursor-pointer relative ${course.isArchived ? 'opacity-50' : ''}`}
+                      style={{ height: "450px", width: "300px" }}
+                    >
+                      <div className="relative h-[45%] w-full">
+                        <img
+                          src={course.image || "/default-thumbnail.jpg"}
+                          alt={`${course.title} thumbnail`}
+                          className="absolute inset-0 w-full h-full object-cover rounded-t-2xl"
+                        />
+                        {course.isArchived && (
+                          <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs">
+                            Archived
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-6 flex flex-col flex-grow">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate">
+                          {course.title}
+                        </h3>
+                        <p className="text-gray-700 text-sm flex-grow overflow-hidden">
+                          {course.description}
+                        </p>
+                        {course.tags?.slice(0, 3).length > 0 && (
+                          <div className="mt-2 flex flex-wrap">
+                            {course.tags.slice(0, 3).map((tag, index) => (
+                              <span
+                                key={index}
+                                className="inline-block bg-coral-500 text-white text-xs px-2 py-1 rounded-full mr-2 mb-2"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {course.techStack?.slice(0, 3).length > 0 && (
+                          <div className="mt-2 flex flex-wrap">
+                            {course.techStack.slice(0, 3).map((tech, index) => (
+                              <span
+                                key={index}
+                                className="inline-block text-white bg-[#FF6247] text-xs px-2 py-1 rounded-full mr-2 mb-2"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex justify-between mt-4">
+                          {!course.isArchived ? (
+                            <>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation(); 
+                                  handleDeleteCourse(course.id);
+                                }}
+                                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                              >
+                                Delete
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation(); 
+                                  handleArchiveCourse(course.id);
+                                }}
+                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                              >
+                                Archive
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation(); 
+                                handleUnarchiveCourse(course.id);
+                              }}
+                              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                            >
+                              Unarchive
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
               ))}
               {provided.placeholder}
             </div>
@@ -208,4 +220,4 @@ const CourseAdministration = ({ addActivity }) => {
   );
 };
 
-export default CourseAdministration;
+export default CourseManagement;

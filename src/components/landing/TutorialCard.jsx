@@ -19,7 +19,7 @@ function TutorialCard({ title, description, url, tags }) {
     return () => clearTimeout(timer);
   }, []);
 
-  const limitedTags = tags ? tags.slice(0, 2) : [];
+  const limitedTags = tags ? tags.slice(11, 15) : [];
 
   return (
     <div className="block bg-white rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-2xl hover:scale-105">

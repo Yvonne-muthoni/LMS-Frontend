@@ -12,9 +12,9 @@ function RecommendedSection({ searchTerm }) {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        // Fetch data from the API
         const response = await axios.get("http://localhost:5000/courses");
-        setCourses(response.data.courses); 
+        const fetchedCourses = response.data.courses || []; // Fallback to an empty array if undefined
+        setCourses(fetchedCourses);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -22,17 +22,13 @@ function RecommendedSection({ searchTerm }) {
         setLoading(false);
       }
     };
-
+  
     fetchCourses();
   }, []);
-
-  const handleCardClick = (courseId) => {
-    navigate(`/courses/${courseId}`);
-  };
-
-  // Limit to only the first 3 courses
-  const limitedCourses = courses.slice(0, 3);
-
+  
+  // Safeguard slice operation by ensuring `courses` is an array
+  const limitedCourses = Array.isArray(courses) ? courses.slice(0, 3) : [];
+  
   const filteredCourses = limitedCourses.filter(
     (course) =>
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,6 +38,7 @@ function RecommendedSection({ searchTerm }) {
           tag.toLowerCase().includes(searchTerm.toLowerCase())
         ))
   );
+  
 
   return (
     <section className="my-16 flex flex-col items-center">

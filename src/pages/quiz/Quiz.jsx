@@ -1,6 +1,5 @@
 
 
-
 import React, { useEffect, useState } from 'react';
 import QuizQuestion from '../../components/quiz/QuizQuestion';
 import QuizNavigation from '../../components/quiz/QuizNavigation';
@@ -34,13 +33,13 @@ function Quiz() {
         if (data.questions && Array.isArray(data.questions) && data.questions.every(question => 
           typeof question.questionText === 'string' &&
           typeof question.correctAnswer === 'string' &&
-          Array.isArray(JSON.parse(question.options)) &&
-          JSON.parse(question.options).every(option => typeof option === 'string')
+          (typeof question.options === 'string' || Array.isArray(question.options)) &&
+          (typeof question.options === 'string' ? JSON.parse(question.options).every(option => typeof option === 'string') : question.options.every(option => typeof option === 'string'))
         )) {
-          // Parse the options field from JSON string to array
+          // Parse the options field from JSON string to array if necessary
           const processedQuestions = data.questions.map(question => ({
             ...question,
-            options: JSON.parse(question.options),
+            options: typeof question.options === 'string' ? JSON.parse(question.options) : question.options,
           }));
 
           setQuizData(processedQuestions);
