@@ -1,171 +1,141 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { Spinner, useToast } from '@chakra-ui/react';
-import QuizQuestion from '../../components/quiz/QuizQuestion';
-import ProgressBar from '../../components/quiz/ProgressBar';
-import QuizNavigation from '../../components/quiz/QuizNavigation';
-import QuizResults from '../../components/quiz/QuizResults';
 
-const dummyQuizData = {
-  html: [
-    {
-      question: 'What does HTML stand for?',
-      options: [
-        'Hyper Text Markup Language',
-        'Home Tool Markup Language',
-        'Hyperlinks and Text Markup Language',
-        'Hyperlinking Text Mark Language'
-      ],
-    },
-    {
-      question: 'Who is making the Web standards?',
-      options: [
-        'Google',
-        'Microsoft',
-        'Mozilla',
-        'The World Wide Web Consortium'
-      ],
-    },
-    {
-      question: 'Choose the correct HTML element for the largest heading:',
-      options: [
-        '<heading>',
-        '<h1>',
-        '<h6>',
-        '<head>'
-      ],
-    }
-  ],
-  javascript: [
-    // Add JavaScript questions here
-  ],
-  react: [
-    // Add React questions here
-  ],
-  python: [
-    // Add Python questions here
-  ],
-};
+
+
+import React, { useEffect, useState } from 'react';
+import QuizQuestion from '../../components/quiz/QuizQuestion';
+import QuizNavigation from '../../components/quiz/QuizNavigation';
+import ProgressBar from '../../components/quiz/ProgressBar';
+import QuizResults from '../../components/quiz/QuizResults';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Quiz() {
-    const { category } = useParams();
-    const [quizData, setQuizData] = useState(null);
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState([]);
-    const [quizCompleted, setQuizCompleted] = useState(false);
-    const toast = useToast();
-  
-    useEffect(() => {
-      const fetchQuizData = async () => {
-        try {
-          const data = dummyQuizData[category.toLowerCase()];
-          if (data) {
-            setQuizData(data);
-            setAnswers(new Array(data.length).fill(null));
-  
-            // Load saved progress
-            const savedProgress = localStorage.getItem('quizProgress');
-            if (savedProgress) {
-              const { currentQuestion, answers } = JSON.parse(savedProgress);
-              setCurrentQuestion(currentQuestion);
-              setAnswers(answers);
-            }
-          } else {
-            toast({
-              title: "Error",
-              description: `No quiz data found for category: ${category}`,
-              status: "error",
-              duration: 5000,
-              isClosable: true,
-            });
-          }
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: `Error fetching quiz data: ${error.message}`,
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
+  const { category } = useParams();
+  const [quizData, setQuizData] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [quizFinished, setQuizFinished] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuizData = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/questions/${category.toLowerCase()}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch quiz data: ${response.statusText}`);
         }
-      };
-      fetchQuizData();
-    }, [category, toast]);
-  
-    useEffect(() => {
-      if (quizData) {
-        // Save progress
-        localStorage.setItem('quizProgress', JSON.stringify({ currentQuestion, answers }));
+
+        const data = await response.json();
+        console.log('Fetched quiz data:', data); // Debugging line
+
+        // Validate and process quiz data format
+        if (data.questions && Array.isArray(data.questions) && data.questions.every(question => 
+          typeof question.questionText === 'string' &&
+          typeof question.correctAnswer === 'string' &&
+          Array.isArray(JSON.parse(question.options)) &&
+          JSON.parse(question.options).every(option => typeof option === 'string')
+        )) {
+          // Parse the options field from JSON string to array
+          const processedQuestions = data.questions.map(question => ({
+            ...question,
+            options: JSON.parse(question.options),
+          }));
+
+          setQuizData(processedQuestions);
+          setAnswers(new Array(processedQuestions.length).fill(null));
+          setCurrentQuestion(0);
+          setQuizFinished(false);
+          setIsAnswered(false);
+        } else {
+          throw new Error('Invalid quiz data format');
+        }
+      } catch (error) {
+        console.error(error); 
+        toast.error('Failed to load quiz data');
+        setError('Failed to load quiz data. Please try again later.');
+      } finally {
+        setLoading(false);
       }
-    }, [quizData, currentQuestion, answers]);
-  
-    const handleAnswerSelect = (index) => {
-      const newAnswers = [...answers];
+    };
+
+    fetchQuizData();
+  }, [category]);
+
+  const handleAnswerSelect = (index) => {
+    setAnswers(prevAnswers => {
+      const newAnswers = [...prevAnswers];
       newAnswers[currentQuestion] = index;
-      setAnswers(newAnswers);
-    };
-  
-    const handleNavigation = (index) => {
-      setCurrentQuestion(index);
-    };
-  
-    const handleComplete = useCallback(() => {
-      setQuizCompleted(true);
-    }, []);
-  
-    const handleRestart = () => {
-      setCurrentQuestion(0);
-      setAnswers(new Array(quizData.length).fill(null));
-      setQuizCompleted(false);
-      localStorage.removeItem('quizProgress');
-    };
-  
-    if (!quizData) {
-      return (
-        <div className="min-h-screen bg-[#f7a08f] flex flex-col items-center justify-center p-4">
-          <Spinner size="xl" />
-        </div>
-      );
-    }
-  
-    if (quizCompleted) {
-      return (
-        <QuizResults 
-          quizData={quizData} 
-          answers={answers}
-          onRestart={handleRestart}
-        />
-      );
-    }
-  
+      return newAnswers;
+    });
+    setIsAnswered(true);
+  };
+
+  const handleNavigate = (nextQuestion) => {
+    setCurrentQuestion(nextQuestion);
+    setIsAnswered(false);
+  };
+
+  const handleComplete = () => {
+    setQuizFinished(true);
+  };
+
+  const handleRestart = () => {
+    setCurrentQuestion(0);
+    setAnswers(new Array(quizData.length).fill(null));
+    setQuizFinished(false);
+    setIsAnswered(false);
+  };
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (quizFinished) {
     return (
-      <div className="min-h-screen bg-[#f7a08f] flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-6">
-          <div className="flex justify-between items-center mb-6">
-            <button className="text-coral-500 px-4 py-2 rounded-full" onClick={() => window.history.back()}>&lt; Back</button>
-            <h1 className="text-3xl font-bold text-center">{category.toUpperCase()} QUIZ</h1>
-            <div className="w-20"></div>
-          </div>
-          {quizData[currentQuestion] && (
-            <QuizQuestion 
-              question={quizData[currentQuestion].question} 
-              options={quizData[currentQuestion].options}
-              selectedAnswer={answers[currentQuestion]}
-              onSelectAnswer={handleAnswerSelect}
-            />
-          )}
-          <div className="mt-8">
-            <ProgressBar current={currentQuestion + 1} total={quizData.length} />
-            <QuizNavigation 
-              currentQuestion={currentQuestion}
-              totalQuestions={quizData.length}
-              onNavigate={handleNavigation}
-              onComplete={handleComplete}
-            />
-          </div>
-        </div>
-      </div>
+      <QuizResults
+        quizData={quizData}
+        answers={answers}
+        onRestart={handleRestart}
+      />
     );
   }
-  
-  export default Quiz;
+
+  if (quizData.length === 0) {
+    return <p>No questions available.</p>;
+  }
+
+  const question = quizData[currentQuestion];
+
+  return (
+    <div className="p-4">
+      <ProgressBar current={currentQuestion + 1} total={quizData.length} />
+      {question ? (
+        <div>
+          <QuizQuestion
+            question={question.questionText}
+            options={question.options}
+            selectedAnswer={answers[currentQuestion]}
+            onSelectAnswer={handleAnswerSelect}
+          />
+          <QuizNavigation
+            currentQuestion={currentQuestion}
+            totalQuestions={quizData.length}
+            onNavigate={handleNavigate}
+            onComplete={handleComplete}
+            isAnswered={isAnswered}
+          />
+        </div>
+      ) : (
+        <p>No questions available.</p>
+      )}
+    </div>
+  );
+}
+
+export default Quiz;

@@ -1,9 +1,15 @@
+
+
+
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function QuizResults({ quizData, answers, onRestart }) {
   const navigate = useNavigate();
+
   const score = answers.reduce((acc, answer, index) => {
-    return answer === quizData[index].correctAnswer ? acc + 1 : acc;
+    const correctIndex = quizData[index].options.indexOf(quizData[index].correctAnswer);
+    return answer === correctIndex ? acc + 1 : acc;
   }, 0);
 
   const handleLabsNavigation = () => {
@@ -17,12 +23,12 @@ function QuizResults({ quizData, answers, onRestart }) {
         <p className="text-xl mb-4 text-center">Your score: {score} / {quizData.length}</p>
         {quizData.map((question, index) => (
           <div key={index} className="mb-4">
-            <p className="font-semibold">{question.question}</p>
+            <p className="font-semibold">{question.questionText}</p>
             <p className="text-green-600">
-              Correct answer: {question.options[question.correctAnswer]}
+              Correct answer: {question.correctAnswer}
             </p>
-            <p className={answers[index] === question.correctAnswer ? "text-green-600" : "text-red-600"}>
-              Your answer: {question.options[answers[index]]}
+            <p className={answers[index] === quizData[index].options.indexOf(quizData[index].correctAnswer) ? "text-green-600" : "text-red-600"}>
+              Your answer: {answers[index] !== null ? question.options[answers[index]] : "No answer selected"}
             </p>
           </div>
         ))}
