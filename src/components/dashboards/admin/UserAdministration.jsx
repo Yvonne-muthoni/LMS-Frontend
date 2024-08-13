@@ -1,58 +1,129 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const UserAdministration = ({ addActivity }) => {
   const [showForm, setShowForm] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [users, setUsers] = useState([]);
+  const [courseData, setCourseData] = useState({
+    title: '',
+    description: '',
+    image: '',
+    video: '',
+    techStack: '',
+    whatYouWillLearn: ''
+  });
+  const [courses, setCourses] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newUser = { name: userName, email: userEmail };
-    setUsers([newUser, ...users]);
-    addActivity(`User "${userName}" was added.`);
-    setUserName('');
-    setUserEmail('');
-    setShowForm(false);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCourseData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
-  const handleDelete = (index) => {
-    const updatedUsers = users.filter((_, i) => i !== index);
-    setUsers(updatedUsers);
-    addActivity(`User "${users[index].name}" was deleted.`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newCourse = {
+      ...courseData,
+      techStack: courseData.techStack.split(',').map(item => item.trim()),
+      whatYouWillLearn: courseData.whatYouWillLearn.split(',').map(item => item.trim())
+    };
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/courses', newCourse);
+      setCourses([response.data, ...courses]);
+      addActivity(`Course "${courseData.title}" was added.`);
+      setCourseData({
+        title: '',
+        description: '',
+        image: '',
+        video: '',
+        techStack: '',
+        whatYouWillLearn: ''
+      });
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error adding course:', error);
+      addActivity('An error occurred while adding the course.');
+    }
   };
 
   return (
     <section className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4">User Management</h2>
+      <h2 className="text-xl font-semibold mb-4">Course Management</h2>
       <button 
         onClick={() => setShowForm(!showForm)} 
         className="bg-[#FF6247] text-white px-4 py-2 rounded hover:bg-[#FF3E3E] transition"
       >
-        {showForm ? 'Hide Form' : 'Add New User'}
+        {showForm ? 'Hide Form' : 'Add New Course'}
       </button>
       {showForm && (
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
-            <label className="block text-gray-700">User Name</label>
+            <label className="block text-gray-700">Course Title</label>
             <input 
               type="text" 
+              name="title"
               className="w-full border border-gray-300 p-2 rounded" 
-              placeholder="Enter user name" 
-              value={userName} 
-              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Enter course title" 
+              value={courseData.title} 
+              onChange={handleInputChange}
             />
           </div>
           <div>
-            <label className="block text-gray-700">User Email</label>
+            <label className="block text-gray-700">Course Description</label>
             <input 
-              type="email" 
+              type="text" 
+              name="description"
               className="w-full border border-gray-300 p-2 rounded" 
-              placeholder="Enter user email" 
-              value={userEmail} 
-              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder="Enter course description" 
+              value={courseData.description} 
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Course Image URL</label>
+            <input 
+              type="text" 
+              name="image"
+              className="w-full border border-gray-300 p-2 rounded" 
+              placeholder="Enter image URL" 
+              value={courseData.image} 
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Course Video URL</label>
+            <input 
+              type="text" 
+              name="video"
+              className="w-full border border-gray-300 p-2 rounded" 
+              placeholder="Enter video URL" 
+              value={courseData.video} 
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Tech Stack (comma separated)</label>
+            <input 
+              type="text" 
+              name="techStack"
+              className="w-full border border-gray-300 p-2 rounded" 
+              placeholder="e.g., JavaScript, React, Node.js" 
+              value={courseData.techStack} 
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">What You Will Learn (comma separated)</label>
+            <input 
+              type="text" 
+              name="whatYouWillLearn"
+              className="w-full border border-gray-300 p-2 rounded" 
+              placeholder="e.g., Advanced JavaScript, React, Node.js" 
+              value={courseData.whatYouWillLearn} 
+              onChange={handleInputChange}
             />
           </div>
           <button 
@@ -63,22 +134,16 @@ const UserAdministration = ({ addActivity }) => {
           </button>
         </form>
       )}
-      {users.length > 0 && (
+      {courses.length > 0 && (
         <div className="mt-4">
-          <h3 className="text-lg font-medium mb-2">User List</h3>
+          <h3 className="text-lg font-medium mb-2">Course List</h3>
           <ul>
-            {users.map((user, index) => (
+            {courses.map((course, index) => (
               <li key={index} className="flex justify-between items-center border-b border-gray-300 py-2">
                 <div>
-                  <h4 className="font-medium">{user.name}</h4>
-                  <p>{user.email}</p>
+                  <h4 className="font-medium">{course.title}</h4>
+                  <p>{course.description}</p>
                 </div>
-                <button 
-                  onClick={() => handleDelete(index)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
               </li>
             ))}
           </ul>
