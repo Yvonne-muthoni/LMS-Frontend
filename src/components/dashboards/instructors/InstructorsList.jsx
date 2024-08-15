@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { UserIcon } from '@heroicons/react/24/solid'; 
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 const InstructorsList = () => {
   const [adminUsers, setAdminUsers] = useState([]);
