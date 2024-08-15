@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Spinner, Box, Center, Text } from "@chakra-ui/react";
+import { Spinner, Box, Center, Text, Grid, Flex } from "@chakra-ui/react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import CoursesList from "../../components/course/CoursesList";
 import ProCoursesList from "../../components/course/ProCoursesList";
 
 function ProCourse() {
@@ -8,13 +10,10 @@ function ProCourse() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(
-          "https://lms-backend-1-yx57.onrender.com/courses/"
-        );
+        const response = await axios.get("http://127.0.0.1:5000/courses/pro");
         const activeCourses = response.data.filter(
           (course) => !course.isArchived
         ); // Filter out archived courses
@@ -49,7 +48,7 @@ function ProCourse() {
   }
 
   return (
-    <Box bg="gray.50" minH="100vh" py={16} px={4}>
+    <Box bg="gray.50" minH="100vh" py={16} px={4} sm={{ px: 6 }} lg={{ px: 8 }}>
       <Box maxW="7xl" mx="auto">
         <Text
           fontSize="5xl"
@@ -58,7 +57,7 @@ function ProCourse() {
           textAlign="center"
           mb={4}
         >
-          Pro Courses
+         Pro Courses
         </Text>
         <Text
           color="gray.600"

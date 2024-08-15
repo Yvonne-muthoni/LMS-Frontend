@@ -11,14 +11,11 @@ const InstructorsList = () => {
     const fetchAdminUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "https://lms-backend-1-yx57.onrender.com/users",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("http://127.0.0.1:5000/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const allUsers = response.data.users;
 
         // Filter users by role 'admin'

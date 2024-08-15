@@ -43,9 +43,7 @@ const CourseManagement = () => {
 
   const handleDeleteCourse = async (id) => {
     try {
-      await axios.delete(
-        `https://lms-backend-1-yx57.onrender.com/courses/${id}`
-      );
+      await axios.delete(`http://127.0.0.1:5000/courses/${id}`);
       setCourses(courses.filter((course) => course.id !== id));
       notifyActivity(`Course with ID "${id}" was deleted.`);
     } catch (error) {
@@ -55,9 +53,7 @@ const CourseManagement = () => {
 
   const handleArchiveCourse = async (id) => {
     try {
-      await axios.put(
-        `https://lms-backend-1-yx57.onrender.com/courses/${id}/archive`
-      );
+      await axios.put(`http://127.0.0.1:5000/courses/${id}/archive`);
       setCourses(courses.map(course =>
         course.id === id ? { ...course, isArchived: true } : course
       ));
@@ -69,9 +65,7 @@ const CourseManagement = () => {
 
   const handleUnarchiveCourse = async (id) => {
     try {
-      await axios.put(
-        `https://lms-backend-1-yx57.onrender.com/courses/${id}/unarchive`
-      );
+      await axios.put(`http://127.0.0.1:5000/courses/${id}/unarchive`);
       setCourses(courses.map(course =>
         course.id === id ? { ...course, isArchived: false } : course
       ));

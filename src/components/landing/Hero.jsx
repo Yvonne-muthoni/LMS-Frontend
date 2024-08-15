@@ -15,9 +15,7 @@ function Hero() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const response = await axios.get(
-          "https://lms-backend-1-yx57.onrender.com/courses"
-        );
+        const response = await axios.get("http://localhost:5000/courses");
         if (response.status === 200) {
           const courses = response.data.courses; 
           setFeaturedCourse(courses[0] || null);
