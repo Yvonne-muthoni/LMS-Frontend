@@ -37,18 +37,21 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/subscribe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`, 
-      },
-      body: JSON.stringify({
-        user_id: user?.id,
-        amount: Number(amount),
-        phone_number: phoneNumber,
-      }),
-    });
+    const response = await fetch(
+      "https://lms-backend-1-yx57.onrender.com/subscribe",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          user_id: user?.id,
+          amount: Number(amount),
+          phone_number: phoneNumber,
+        }),
+      }
+    );
 
     const data = await response.json();
 
