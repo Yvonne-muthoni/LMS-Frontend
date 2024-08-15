@@ -13,7 +13,7 @@ function RecommendedSection({ searchTerm }) {
     const fetchCourses = async () => {
       try {
         const response = await axios.get("http://localhost:5000/courses");
-        const fetchedCourses = response.data.courses || []; // Fallback to an empty array if undefined
+        const fetchedCourses = response.data; 
         setCourses(fetchedCourses);
         setLoading(false);
       } catch (error) {
@@ -22,13 +22,17 @@ function RecommendedSection({ searchTerm }) {
         setLoading(false);
       }
     };
-  
+
     fetchCourses();
   }, []);
-  
-  
-  const limitedCourses = Array.isArray(courses) ? courses.slice(0, 3) : [];
-  
+
+  const handleCardClick = (courseId) => {
+    navigate(`/courses/${courseId}`);
+  };
+
+  // Change slice limit to 4
+  const limitedCourses = Array.isArray(courses) ? courses.slice(0, 4) : [];
+
   const filteredCourses = limitedCourses.filter(
     (course) =>
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -38,7 +42,6 @@ function RecommendedSection({ searchTerm }) {
           tag.toLowerCase().includes(searchTerm.toLowerCase())
         ))
   );
-  
 
   return (
     <section className="my-16 flex flex-col items-center">
@@ -48,8 +51,8 @@ function RecommendedSection({ searchTerm }) {
           : "Recommended Courses"}
       </h3>
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-          {[...Array(3)].map((_, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
+          {[...Array(4)].map((_, index) => (
             <div
               key={index}
               className="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 cursor-pointer"
@@ -78,7 +81,7 @@ function RecommendedSection({ searchTerm }) {
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : filteredCourses.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
           {filteredCourses.map((course) => (
             <div
               key={course.id}

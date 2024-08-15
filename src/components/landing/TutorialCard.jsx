@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Skeleton } from "@chakra-ui/react";
+import React, { useState, useEffect } from 'react';
+import { Skeleton } from '@chakra-ui/react';
 
-function TutorialCard({ title, description, url, tags }) {
+function TutorialCard({ title, description, image, video, techStack }) {
   const [loading, setLoading] = useState(true);
 
   const getYouTubeVideoId = (url) => {
@@ -12,14 +12,14 @@ function TutorialCard({ title, description, url, tags }) {
     return match ? match[1] : null;
   };
 
-  const videoId = getYouTubeVideoId(url);
+  const videoId = getYouTubeVideoId(video);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  const limitedTags = tags ? tags.slice(11, 15) : [];
+  const limitedTags = techStack ? techStack.slice(0, 5) : [];
 
   return (
     <div className="block bg-white rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-2xl hover:scale-105">
