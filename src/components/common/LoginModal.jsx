@@ -40,7 +40,9 @@ function LoginModal({ onClose }) {
         await login(data.user, data.access_token);
         handleClose();
         setTimeout(() => {
-          navigate(data.user.role === 'admin' ? '/admin-home' : '/home', { replace: true });
+          navigate(data.user.role === "admin" ? "/admin-dashboard" : "/home", {
+            replace: true,
+          });
         }, 100);
       } else {
         setError(data.message || 'Login failed');
