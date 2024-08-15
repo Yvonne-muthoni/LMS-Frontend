@@ -11,11 +11,11 @@ const TutorialCards = () => {
     const fetchTutorials = async () => {
       try {
         const response = await axios.get("http://localhost:5000/courses");
-        const courses = response.data.courses;
+        const courses = response.data; // Adjust based on the actual response structure
         if (Array.isArray(courses)) {
           setTutorials(courses);
         } else {
-          console.error("Unexpected data format:", response.data);
+          console.error(":", response.data);
           setError("Unexpected data format");
         }
       } catch (error) {
@@ -27,8 +27,7 @@ const TutorialCards = () => {
     fetchTutorials();
   }, []);
 
- 
-  const displayedTutorials = tutorials.slice(0, 3);
+  const displayedTutorials = tutorials.slice(15, 18);
 
   return (
     <section className="py-16 bg-[#FF6247]">
@@ -47,8 +46,9 @@ const TutorialCards = () => {
                 key={tutorial.id}
                 title={tutorial.title}
                 description={tutorial.description}
-                url={tutorial.video}
-                techStack={tutorial.tech_stack} 
+                image={tutorial.image}   // Assuming `image` should be passed
+                video={tutorial.video}    // Adjust to match `TutorialCard` prop name
+                techStack={tutorial.techStack} // Adjust to match `TutorialCard` prop name
               />
             ))
           ) : (
@@ -66,8 +66,9 @@ TutorialCards.propTypes = {
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
+      image: PropTypes.string,  // Add this if `image` is included
       video: PropTypes.string,
-      tech_stack: PropTypes.arrayOf(PropTypes.string),
+      techStack: PropTypes.arrayOf(PropTypes.string),
     })
   ),
 };
