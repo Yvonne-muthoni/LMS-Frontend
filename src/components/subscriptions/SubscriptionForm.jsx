@@ -61,7 +61,7 @@ const handleSubmit = async (e) => {
         isClosable: true,
       });
       setTimeout(() => {
-        navigate("/courses");
+        navigate("/pro-courses");
       }, 10000); 
     } else {
       setError(data.message || "Subscription failed. Please try again.");
