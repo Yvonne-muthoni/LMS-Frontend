@@ -25,7 +25,7 @@ function ProCoursevideo() {
     const fetchCourseData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/pro-courses/${courseId}`
+          `http://127.0.0.1:5000/courses/pro/${courseId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch course data");

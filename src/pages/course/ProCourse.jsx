@@ -13,7 +13,7 @@ function ProCourse() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/pro-courses");
+        const response = await axios.get("http://127.0.0.1:5000/courses/pro");
         const activeCourses = response.data.filter(
           (course) => !course.isArchived
         ); // Filter out archived courses
