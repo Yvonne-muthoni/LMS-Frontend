@@ -18,7 +18,7 @@ function Hero() {
         const response = await axios.get("http://localhost:5000/courses");
         if (response.status === 200) {
           const courses = response.data.courses; 
-          setFeaturedCourse(courses[15] || null);
+          setFeaturedCourse(courses[0] || null);
         } else {
           throw new Error("Failed to fetch courses");
         }
@@ -119,3 +119,6 @@ function Hero() {
 }
 
 export default Hero;
+
+
+
