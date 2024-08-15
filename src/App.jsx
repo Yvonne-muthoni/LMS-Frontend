@@ -249,5 +249,4 @@ const QuizPageLayout = () => (
     <Quiz />
   </>
 );
-
 export default App;
