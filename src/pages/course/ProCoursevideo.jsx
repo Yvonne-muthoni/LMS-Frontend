@@ -31,7 +31,15 @@ function ProCoursevideo() {
           throw new Error("Failed to fetch course data");
         }
         const data = await response.json();
-        setCourseData(data.course); // Ensure the response is in the correct format
+        setCourseData({
+          ...data.course,
+          tech_stack: Array.isArray(data.course.techStack)
+            ? data.course.techStack
+            : [],
+          what_you_will_learn: Array.isArray(data.course.whatYouWillLearn)
+            ? data.course.whatYouWillLearn
+            : [],
+        });
         setCompleted(
           localStorage.getItem(`course_${courseId}_completed`) === "true"
         );
@@ -88,7 +96,10 @@ function ProCoursevideo() {
     );
   }
 
-  const videoId = courseData.video?.split("v=")[1] || courseData.video;
+  // Extract video ID more robustly
+  const videoId = courseData.video
+    ? courseData.video.split("v=")[1]?.split("&")[0]
+    : null;
 
   return (
     <Box maxWidth="8xl" margin="auto" padding={6}>
@@ -137,11 +148,12 @@ function ProCoursevideo() {
       </Button>
 
       <VStack spacing={8} align="stretch">
-        <TechStack techStack={courseData.tech_stack || []} />
+        <TechStack techStack={courseData.tech_stack} />
         <LearningOutcomes
-          outcomes={
-            courseData.what_you_will_learn?.map((text) => ({ text })) || []
-          }
+          outcomes={courseData.what_you_will_learn.map((text, index) => ({
+            text,
+            id: index,
+          }))} // Include unique IDs
         />
       </VStack>
     </Box>
