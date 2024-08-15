@@ -43,16 +43,13 @@ const RegistrationForm = () => {
     setSuccess("");
 
     try {
-      const response = await fetch(
-        "https://lms-backend-1-yx57.onrender.com/users",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, email, password, role }),
-        }
-      );
+      const response = await fetch("http://127.0.0.1:5000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password, role }),
+      });
 
       const data = await response.json();
 
@@ -121,7 +118,7 @@ const RegistrationForm = () => {
             name="password"
             type={showPassword ? "text" : "password"}
             value={password}
-            onChange={handlePasswordChange}
+            onChange={handlePasswordChange} 
             placeholder="Enter your password"
             _focus={{
               borderColor: colorScheme,

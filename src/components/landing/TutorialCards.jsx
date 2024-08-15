@@ -10,9 +10,7 @@ const TutorialCards = () => {
   useEffect(() => {
     const fetchTutorials = async () => {
       try {
-        const response = await axios.get(
-          "https://lms-backend-1-yx57.onrender.com/courses"
-        );
+        const response = await axios.get("http://localhost:5000/courses");
         const courses = response.data.courses;
         if (Array.isArray(courses)) {
           setTutorials(courses);
