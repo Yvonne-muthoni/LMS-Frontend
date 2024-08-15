@@ -100,7 +100,7 @@ const CourseManagement = () => {
         View Course: Browse through the list of courses & DELETE, ARCHIVE, or UNARCHIVE a specific course.
       </h1>
 
-      {/* Notifications */}
+     
       <div className="mb-4">
         {notifications.map((notification, index) => (
           <div key={index} className="bg-green-600 text-white px-4 py-2 rounded mb-2">

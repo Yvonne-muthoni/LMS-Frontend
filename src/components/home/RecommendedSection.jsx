@@ -26,7 +26,7 @@ function RecommendedSection({ searchTerm }) {
     fetchCourses();
   }, []);
   
-  // Safeguard slice operation by ensuring `courses` is an array
+  
   const limitedCourses = Array.isArray(courses) ? courses.slice(0, 3) : [];
   
   const filteredCourses = limitedCourses.filter(
