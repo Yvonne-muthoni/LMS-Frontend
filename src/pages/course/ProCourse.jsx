@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Spinner, Box, Center, Text, Grid, Flex } from "@chakra-ui/react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import CoursesList from "../../components/course/CoursesList";
+import { Spinner, Box, Center, Text } from "@chakra-ui/react";
 import ProCoursesList from "../../components/course/ProCoursesList";
 
 function ProCourse() {
@@ -14,6 +12,8 @@ function ProCourse() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:5000/courses/pro");
+        // Set the response data into courses state
+        setCourses(response.data.courses);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -44,7 +44,7 @@ function ProCourse() {
   }
 
   return (
-    <Box bg="gray.50" minH="100vh" py={16} px={4} sm={{ px: 6 }} lg={{ px: 8 }}>
+    <Box bg="gray.50" minH="100vh" py={16} px={4}>
       <Box maxW="7xl" mx="auto">
         <Text
           fontSize="5xl"
@@ -53,7 +53,7 @@ function ProCourse() {
           textAlign="center"
           mb={4}
         >
-         Pro Courses
+          Pro Courses
         </Text>
         <Text
           color="gray.600"
