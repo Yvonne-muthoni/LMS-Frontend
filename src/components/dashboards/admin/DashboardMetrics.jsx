@@ -12,7 +12,9 @@ const DashboardMetrics = () => {
   useEffect(() => {
     const fetchActiveCourses = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/courses/count");
+        const response = await axios.get(
+          "https://lms-backend-1-yx57.onrender.com/courses/count"
+        );
         setActiveCourses(response.data.count);
       } catch (error) {
         console.error("Error fetching active courses:", error);
@@ -27,7 +29,9 @@ const DashboardMetrics = () => {
 
     const fetchPaymentSummary = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/payment-summary");
+        const response = await fetch(
+          "https://lms-backend-1-yx57.onrender.com/payment-summary"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch payment summary");
         }
@@ -47,11 +51,14 @@ const DashboardMetrics = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://127.0.0.1:5000/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://lms-backend-1-yx57.onrender.com/users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching users:", error);

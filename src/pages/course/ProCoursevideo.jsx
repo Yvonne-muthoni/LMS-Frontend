@@ -25,7 +25,7 @@ function ProCoursevideo() {
     const fetchCourseData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:5000/courses/pro/${courseId}`
+          `https://lms-backend-1-yx57.onrender.com/courses/pro/${courseId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch course data");

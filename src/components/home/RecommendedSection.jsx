@@ -12,7 +12,9 @@ function RecommendedSection({ searchTerm }) {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/courses");
+        const response = await axios.get(
+          "https://lms-backend-1-yx57.onrender.com/courses"
+        );
         const fetchedCourses = response.data.courses || []; // Fallback to an empty array if undefined
         setCourses(fetchedCourses);
         setLoading(false);

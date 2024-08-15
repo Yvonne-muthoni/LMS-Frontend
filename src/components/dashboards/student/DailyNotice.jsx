@@ -15,7 +15,9 @@ const CourseNotifications = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/courses');
+        const response = await axios.get(
+          "https://lms-backend-1-yx57.onrender.com/courses"
+        );
         const notifications = response.data;
 
         if (notifications.length > 0) {
@@ -42,7 +44,9 @@ const CourseNotifications = () => {
     if (isAllNotices) {
       const fetchCourses = async () => {
         try {
-          const response = await axios.get('http://127.0.0.1:5000/courses');
+          const response = await axios.get(
+            "https://lms-backend-1-yx57.onrender.com/courses"
+          );
           setCourses(response.data);
         } catch (error) {
           console.error('Error fetching courses:', error);
@@ -57,7 +61,9 @@ const CourseNotifications = () => {
   useEffect(() => {
     const checkSubscription = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/api/user/subscription-status');
+        const response = await axios.get(
+          "https://lms-backend-1-yx57.onrender.com/api/user/subscription-status"
+        );
         setIsSubscribed(response.data.isSubscribed);
       } catch (error) {
         console.error('Error checking subscription status:', error);
