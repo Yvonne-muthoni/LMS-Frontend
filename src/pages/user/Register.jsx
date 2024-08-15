@@ -15,11 +15,10 @@ const Register = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // Handle password changes and update strength
+
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    // Example logic for password strength; adjust as needed
     setPasswordStrength(newPassword.length > 8 ? "Strong" : "Weak");
   };
 

@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, Heading, Spinner, VStack, Text, useToast } from '@chakra-ui/react';
-import { useParams, useNavigate } from 'react-router-dom';
-import TechStack from '../../components/course/TechStack';
-import LearningOutcomes from '../../components/course/LearningOutcomes';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Heading,
+  Spinner,
+  VStack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useParams, useNavigate } from "react-router-dom";
+import TechStack from "../../components/course/TechStack";
+import LearningOutcomes from "../../components/course/LearningOutcomes";
 
-const CourseVideo = () => {
-  const { courseId } = useParams();
+function ProCoursevideo() {
+  const { courseId } = useParams(); 
   const navigate = useNavigate();
   const toast = useToast();
   const [courseData, setCourseData] = useState(null);
@@ -16,13 +24,17 @@ const CourseVideo = () => {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/courses/${courseId}`);
+        const response = await fetch(
+          `http://127.0.0.1:5000/courses/pro/${courseId}`
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch course data');
+          throw new Error("Failed to fetch course data");
         }
         const data = await response.json();
         setCourseData(data);
-        setCompleted(localStorage.getItem(`course_${courseId}_completed`) === 'true');
+        setCompleted(
+          localStorage.getItem(`course_${courseId}_completed`) === "true"
+        );
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,7 +47,7 @@ const CourseVideo = () => {
 
   const handleMarkAsComplete = () => {
     setCompleted(true);
-    localStorage.setItem(`course_${courseId}_completed`, 'true');
+    localStorage.setItem(`course_${courseId}_completed`, "true");
     toast({
       title: "Course Completed!",
       description: "Great job on finishing the course!",
@@ -47,7 +59,12 @@ const CourseVideo = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <Spinner size="xl" />
       </Box>
     );
@@ -56,7 +73,9 @@ const CourseVideo = () => {
   if (error) {
     return (
       <Box textAlign="center" padding={4}>
-        <Text color="red.500" fontWeight="bold">Error: {error}</Text>
+        <Text color="red.500" fontWeight="bold">
+          Error: {error}
+        </Text>
       </Box>
     );
   }
@@ -69,21 +88,23 @@ const CourseVideo = () => {
     );
   }
 
-  const videoId = courseData.video?.split('v=')[1];
+  const videoId = courseData.video?.split("v=")[1];
 
   return (
     <Box maxWidth="8xl" margin="auto" padding={6}>
-      <Button 
-        color="#FF6247" 
-        variant="link" 
-        marginBottom={6} 
-        fontSize="lg" 
+      <Button
+        color="#FF6247"
+        variant="link"
+        marginBottom={6}
+        fontSize="lg"
         onClick={() => navigate(-1)}
       >
         ← Back to Courses
       </Button>
 
-      <Heading as="h1" size="2xl" marginBottom={6}>{courseData.title}</Heading>
+      <Heading as="h1" size="2xl" marginBottom={6}>
+        {courseData.title}
+      </Heading>
 
       {videoId ? (
         <Box bg="gray.100" borderRadius="lg" overflow="hidden" marginBottom={6}>
@@ -103,10 +124,10 @@ const CourseVideo = () => {
         </Box>
       )}
 
-      <Button 
-        backgroundColor={completed ? "green.500" : "#FF6247"} 
+      <Button
+        backgroundColor={completed ? "green.500" : "#FF6247"}
         color="white"
-        size="lg" 
+        size="lg"
         width="full"
         onClick={handleMarkAsComplete}
         disabled={completed}
@@ -117,12 +138,12 @@ const CourseVideo = () => {
 
       <VStack spacing={8} align="stretch">
         <TechStack techStack={courseData.techStack} />
-        <LearningOutcomes 
-          outcomes={courseData.whatYouWillLearn.map(text => ({ text }))} 
+        <LearningOutcomes
+          outcomes={courseData.whatYouWillLearn.map((text) => ({ text }))}
         />
       </VStack>
     </Box>
   );
-};
+}
 
-export default CourseVideo;
+export default ProCoursevideo;

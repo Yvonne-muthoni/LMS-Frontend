@@ -1,17 +1,11 @@
-// components/course/CoursesList.js
-import React, { useState } from 'react';
-import CourseCard from './CourseCard';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Spinner, Box, Flex, Grid } from '@chakra-ui/react';
-import { useAuth } from '../../contexts/AuthContext';
-import LoginModal from '../common/LoginModal';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Spinner, Box, Flex, Grid } from "@chakra-ui/react";
+import React, { useState } from "react";
+import ProCourseCard from "./ProCourseCard";
 
-const ITEMS_PER_PAGE = 4;
-
-const CoursesList = ({ courses }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isAuthenticated, login } = useAuth();
+function ProCoursesList({ courses }) {
+    const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 4;
 
   const pageCount = Math.ceil(courses.length / ITEMS_PER_PAGE);
 
@@ -24,63 +18,49 @@ const CoursesList = ({ courses }) => {
     currentPage * ITEMS_PER_PAGE
   );
 
-  const renderPageNumbers = () => (
+  const renderPageNumbers = () =>
     Array.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
       <button
         key={page}
         onClick={() => handlePageClick(page)}
         className={`w-10 h-10 flex items-center justify-center rounded-full text-lg font-semibold transition-colors duration-200 ${
           currentPage === page
-            ? 'bg-[#FF6247] text-white'
-            : 'bg-white text-gray-600 hover:bg-gray-100'
+            ? "bg-[#FF6247] text-white"
+            : "bg-white text-gray-600 hover:bg-gray-100"
         }`}
       >
         {page}
       </button>
-    ))
-  );
+    ));
 
   const handleCourseCardClick = () => {
-    if (!isAuthenticated) {
-      setIsModalOpen(true);
-    } else {
-    }
+    // Logic for handling course card click without authentication check
   };
 
-  if (courses.length === 0) return (
-    <Box textAlign="center" p={4}>
-      No courses available.
-    </Box>
-  );
+  if (courses.length === 0) {
+    return (
+      <Box textAlign="center" p={4}>
+        No courses available.
+      </Box>
+    );
+  }
 
   return (
-    <Box p={4}>
-      {isModalOpen && (
-        <LoginModal
-          onClose={() => setIsModalOpen(false)}
-          onLogin={async () => {
-            try {
-              await login();
-              setIsModalOpen(false);
-            } catch (err) {
-              console.error('Login failed', err);
-            }
-          }}
-          onSignUp={() => {
-            setIsModalOpen(false);
-          }}
-        />
-      )}
-      <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={6} mb={12}>
+    <Box>
+      <Grid
+        templateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+        gap={6}
+        mb={12}
+      >
         {paginatedCourses.map((course) => (
-          <CourseCard
+          <ProCourseCard
             key={course.id}
             id={course.id}
             title={course.title}
             description={course.description}
             image={course.image}
             tags={course.techStack}
-            onClick={handleCourseCardClick} 
+            onClick={handleCourseCardClick}
           />
         ))}
       </Grid>
@@ -105,6 +85,6 @@ const CoursesList = ({ courses }) => {
       </Flex>
     </Box>
   );
-};
+}
 
-export default CoursesList;
+export default ProCoursesList;

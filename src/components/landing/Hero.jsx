@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -8,8 +8,8 @@ function Hero() {
     useEffect(() => {
         const fetchFeaturedCourse = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/courses');
-                setFeaturedCourse(response.data[0] || null); // Use the first course for demonstration
+                const response = await axios.get('http://localhost:5000/courses/18'); // Fetch the course with id 
+                setFeaturedCourse(response.data || null);
             } catch (error) {
                 console.error('Error fetching featured course:', error);
                 setFeaturedCourse(null);

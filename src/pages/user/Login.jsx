@@ -31,8 +31,21 @@ function Login() {
       return;
     }
 
+    if (!email || !password) {
+      setError('Email and password are required.');
+      toast({
+        title: 'Validation Error',
+        description: 'Please fill in both email and password.',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch("http://127.0.0.1:5000/login", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

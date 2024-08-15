@@ -29,18 +29,23 @@ function LoginModal({ onClose }) {
     setError('');
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://lms-backend-1-yx57.onrender.com/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
       const data = await response.json();
       
       if (response.ok) {
         await login(data.user, data.access_token);
         handleClose();
         setTimeout(() => {
-          navigate(data.user.role === 'admin' ? '/admin-home' : '/home', { replace: true });
+          navigate(data.user.role === "admin" ? "/admin-dashboard" : "/home", {
+            replace: true,
+          });
         }, 100);
       } else {
         setError(data.message || 'Login failed');

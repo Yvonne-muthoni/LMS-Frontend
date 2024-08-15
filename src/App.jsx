@@ -25,6 +25,9 @@ import Quiz from "./pages/quiz/Quiz";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import ScrollToTop from './components/common/ScrollToTop';
+import SubscriptionForm from "./components/subscriptions/SubscriptionForm";
+import ProCourse from "./pages/course/ProCourse";
+import ProCoursevideo from "./pages/course/ProCoursevideo";
 
 function App() {
   return (
@@ -65,10 +68,13 @@ function AppRoutes() {
         />
         <Route path="/courses" element={<CoursesPageLayout />} />
         <Route path="/courses/:courseId" element={<CourseVideoPageLayout />} />
+        <Route path="/pro-courses" element={<ProCourse />} />
+        <Route path="/pro-courses/:courseId" element={<ProCoursevideo />} />
         <Route path="/labs" element={<LabsPageLayout />} />
         <Route path="/home" element={<HomePageLayout />} />
         <Route path="/subscription" element={<SubscriptionPageLayout />} />
-        <Route path="/quiz/:category" element={<QuizPageLayout />} /> 
+        <Route path="/subscribe" element={<SubscriptionForm />} />
+        <Route path="/quiz/:category" element={<QuizPageLayout />} />
         <Route
           path="/login"
           element={
