@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 function ProCourseCard({ id, title, description, image, tags }) {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/pro-course/${id}`); 
-  };
-  
+const handleClick = () => {
+  navigate(`/pro-courses/${id}`);
+};
+
   const displayTags = tags?.slice(0, 3) || [];
   return (
     <div
