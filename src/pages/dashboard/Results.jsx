@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SemesterSelector from '../../components/dashboards/results/SemesterSelector';
 import SubjectCard from '../../components/dashboards/results/SubjectCard';
-
-const resultsData = [
-  {
-    semester: 'Fall 2023',
-    subjects: [
-      { name: 'Object Oriented Programming', grade: 'A', details: '90% (Midterm: 45%, Final: 45%)' },
-      { name: 'Fundamentals of Database Systems', grade: 'B+', details: '85% (Midterm: 40%, Final: 45%)' },
-    ],
-  },
-  {
-    semester: 'Spring 2023',
-    subjects: [
-      { name: 'Web Development', grade: 'A-', details: '88% (Midterm: 43%, Final: 45%)' },
-      { name: 'Data Structures', grade: 'B', details: '82% (Midterm: 40%, Final: 42%)' },
-    ],
-  },
-];
+import axios from 'axios';
 
 const Results = () => {
-  const [selectedSemester, setSelectedSemester] = useState(resultsData[0].semester);
+  const [selectedSemester, setSelectedSemester] = useState('');
+  const [resultsData, setResultsData] = useState([]);
+
+  useEffect(() => {
+    // Fetch all quiz results from the backend
+    const fetchResults = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/get-all-quiz-results');
+        setResultsData(response.data);
+        if (response.data.length > 0) {
+          setSelectedSemester(response.data[0].category); // Set the first result's category as the selected semester
+        }
+      } catch (error) {
+        console.error('Error fetching quiz results:', error);
+      }
+    };
+
+    fetchResults();
+  }, []);
 
   const handleSemesterChange = (e) => {
     setSelectedSemester(e.target.value);
   };
 
   const renderResults = () => {
-    const semesterData = resultsData.find((sem) => sem.semester === selectedSemester);
-    return semesterData ? (
-      semesterData.subjects.map((subject, index) => (
+    const semesterData = resultsData.filter((result) => result.category === selectedSemester);
+    return semesterData.length > 0 ? (
+      semesterData.map((subject, index) => (
         <SubjectCard key={index} subject={subject} />
       ))
     ) : (
-      <p>No results available for this semester.</p>
+      <p>No results available for this category.</p>
     );
   };
 
@@ -46,10 +48,10 @@ const Results = () => {
       </header>
       <main className="flex-1 container mx-auto p-6">
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800">View Your Results</h2>
-          <p className="mt-2 text-gray-600">Check your exam results, grades, and academic progress here.</p>
+          <h2 className="text-2xl font-semibold text-gray-800">View All Quiz Results</h2>
+          <p className="mt-2 text-gray-600">Check the quiz results for all categories.</p>
           <SemesterSelector
-            semesters={resultsData}
+            semesters={resultsData.map((result) => ({ semester: result.category }))}
             selectedSemester={selectedSemester}
             onSemesterChange={handleSemesterChange}
           />

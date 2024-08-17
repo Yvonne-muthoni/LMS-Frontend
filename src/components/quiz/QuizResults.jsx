@@ -1,8 +1,6 @@
-
-
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function QuizResults({ quizData, answers, onRestart }) {
   const navigate = useNavigate();
@@ -11,6 +9,28 @@ function QuizResults({ quizData, answers, onRestart }) {
     const correctIndex = quizData[index].options.indexOf(quizData[index].correctAnswer);
     return answer === correctIndex ? acc + 1 : acc;
   }, 0);
+
+  useEffect(() => {
+    // Send quiz results to the backend
+    const saveQuizResults = async () => {
+      try {
+        const resultData = {
+          user_id: 1,  // Replace with the actual user ID
+          category: quizData[0].category, // Assuming category is part of quizData
+          score: score,
+          total_questions: quizData.length,
+          answers: answers,
+        };
+
+        const response = await axios.post('http://127.0.0.1:5000/save-quiz-result', resultData);
+        console.log('Quiz results saved:', response.data);
+      } catch (error) {
+        console.error('Error saving quiz results:', error);
+      }
+    };
+
+    saveQuizResults();
+  }, [score, quizData, answers]);
 
   const handleLabsNavigation = () => {
     navigate('/labs');
